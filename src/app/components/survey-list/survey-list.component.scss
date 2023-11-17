@@ -1,3 +1,42 @@
 .content-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.cards-wrapper {
+  width: 50%;
+  float: left;
   display: grid;
+  grid-gap: 5px;
+  grid-template-columns: 1fr 1fr;
+  padding: 5px;
+  align-items: baseline;
+  justify-items: center;
+}
+
+.list-title {
+  float: left;
+  margin: 50px 80px 100px;
+  width: 100%;
+}
+
+.cards {
+  width: fit-content;
+  grid-column: span 1;
+  padding: 50px 0 0 0;
+  grid-column-start: 1;
+}
+
+.questions-not-found {
+  text-align: center;
+  position: relative;
+}
+
+h3 {
+  margin-left: -100%;
+  width: 100%;
+}
+
+button {
+  text-align: center;
 }

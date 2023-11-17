@@ -1,8 +1,24 @@
 .example-card {
-  max-width: 300px;
+  width: 250px;
 }
 
 .content-wrapper {
   display: grid;
   grid-template-columns: repeat(4, minmax(0px, auto));
+}
+
+button {
+  position: absolute;
+  left: 30%;
+  bottom: 20px;
+}
+
+.radio-group,
+.checkbox-group {
+  display: grid;
+}
+
+textarea {
+  width: 200px;
+  height: 100px;
 }

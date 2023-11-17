@@ -23,7 +23,11 @@ export class CardElement implements OnInit {
   @Input() question!: IQuestion;
 
   formReference?: FormGroupDirective;
-  questionForm!: FormGroup;
+  questionForm: FormGroup = this.formBuilder.group({
+    answers: this.formBuilder.array([
+      new FormControl<string>('', Validators.required),
+    ]),
+  });
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,20 +35,11 @@ export class CardElement implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.questionForm = this.formBuilder.group({
-      answers: this.formBuilder.array([new FormControl<string>('')]),
-    });
+    this.questionForm;
   }
 
-  // getAnswerOptions(question: IQuestion): IAnswer{
-  //   if(question.type === '2'){
-  //     throw new TypeError
-  //   }
-  //   this.store.dispatch(SurveyActions.getAnswers());
-
-  // }
-
   onSubmit(): void {
+    let value = this.questionForm.getRawValue();
     window.location.reload();
   }
 }

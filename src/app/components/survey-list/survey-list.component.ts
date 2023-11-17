@@ -19,7 +19,7 @@ import * as SurveyActions from '../../store/actions/survey.actions';
 })
 export class SurveyListComponent implements OnInit {
   unansweredQuestions$ = this.store.select(selectUnansweredQuestions);
-  //answeredQuestions$ = this.store.select(selectAnsweredQuestions);
+  answeredQuestions$ = this.store.select(selectAnsweredQuestions);
 
   destroy$: Subject<boolean> = new Subject<boolean>();
   constructor(
@@ -31,7 +31,8 @@ export class SurveyListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(SurveyActions.getUnansweredQuestions());
-    //this.store.dispatch(SurveyActions.getAnsweredQuestions());
+    this.store.dispatch(SurveyActions.getAnsweredQuestions());
+    console.log(this.answeredQuestions$);
   }
 
   // ngOnDestroy(): void {
