@@ -1,0 +1,71 @@
+<div class="content-wrapper">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>{{ question.question }}</mat-card-title>
+      <mat-card-subtitle>{{
+        question.creationDate | date : "medium"
+      }}</mat-card-subtitle>
+    </mat-card-header>
+    <!-- <mat-card-content>
+    <p></p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button>Answer</button>
+  </mat-card-actions> -->
+    <form (ngSubmit)="onSubmit()" [formGroup]="questionForm">
+      <fieldset class="form-group">
+        <mat-card-content>
+          <div *ngIf="question.type === '0'">
+            <mat-radio-group
+              aria-labelledby="example-radio-group-label"
+              class="radio-group"
+              formControlName="answers"
+            >
+              <mat-radio-button
+                class="radio-button"
+                *ngFor="let option of question.answers"
+                [value]="option"
+              >
+                {{ option }}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div *ngIf="question.type === '1'">
+            <section class="example-section" formControlName="answers">
+              <mat-checkbox
+                class="example-margin"
+                *ngFor="let option of question.answers"
+                [value]="option"
+              >
+                {{ option }}>
+              </mat-checkbox>
+            </section>
+          </div>
+
+          <div *ngIf="question.type === '2'">
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5"
+              formControlName="answers"
+            ></textarea>
+          </div>
+        </mat-card-content>
+      </fieldset>
+
+      <div class="form-row">
+        <button
+          mat-raised-button
+          type="submit"
+          color="accent"
+          [disabled]="!questionForm.valid"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,70 @@
+.container {
+  width: 700px;
+  margin-top: 50px;
+}
+
+.form-control {
+  display: block;
+}
+
+.form-group {
+  display: grid;
+}
+
+fieldset {
+  margin-top: 10px;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.example-full-width.answers {
+  width: 270px;
+}
+
+.mat-form-field-label-wrapper {
+  height: 40px;
+}
+
+mat-form-field {
+  width: 300px;
+}
+
+.mat-mdc-select-trigger {
+  margin-top: 10px;
+}
+
+button {
+  margin-bottom: 10px;
+}
+
+.form-group.framework {
+  margin-top: 20px;
+}
+
+li {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.btn.btn-primary {
+  width: 100px;
+  margin-top: 10px;
+}
+
+.btn-outline-primary {
+  width: 150px;
+  margin-top: -20px;
+}
+
+#submit-button-div {
+  display: flex;
+  justify-content: center;
+}

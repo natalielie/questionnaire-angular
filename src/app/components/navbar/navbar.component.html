@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <span class="fill-remaining-space">
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      #menuTrigger="matMenuTrigger"
+      (mouseover)="menuTrigger.openMenu()"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+      <span (mouseleave)="menuTrigger.closeMenu()">
+        <button mat-menu-item (click)="goToManagementPage()">
+          <mat-icon>home</mat-icon>
+          <span>Manage your survey</span>
+        </button>
+        <button mat-menu-item (click)="goCreatePage()">
+          <mat-icon>videocam</mat-icon>
+          <span>Create a survey</span>
+        </button>
+        <button mat-menu-item (click)="goToSurveyListPage()">
+          <mat-icon>people_outline</mat-icon>
+          <span>Survey List</span>
+        </button>
+      </span>
+    </mat-menu>
+  </span>
+  <span class="fill-remaining-space">Survey App</span>
+</mat-toolbar>

@@ -1,0 +1,30 @@
+.list-title {
+  float: left;
+  margin: 50px 100px;
+}
+
+.go-to-create-page {
+  float: right;
+  margin: 50px 120px;
+}
+
+mat-table {
+  width: 100%;
+  display: table;
+}
+
+.header {
+  padding-left: 16px;
+  font-size: 20px;
+}
+
+tr {
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+
+tr:hover {
+  background-color: #ddd8e6;
+}

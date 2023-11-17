@@ -1,0 +1,8 @@
+.example-card {
+  max-width: 300px;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0px, auto));
+}

@@ -1,0 +1,24 @@
+<div class="content-wrapper">
+  <div
+    class="cards-wrapper"
+    *ngIf="unansweredQuestions$ | async as unansweredQuestions"
+  >
+    <div
+      class="unanswered-questions"
+      *ngFor="let unansweredQuestion of unansweredQuestions"
+    >
+      <card-element [question]="unansweredQuestion"></card-element>
+    </div>
+  </div>
+</div>
+<!-- <div
+  class="cards-wrapper"
+  *ngIf="answeredQuestions$ | async as answeredQuestions"
+>
+  <div
+    class="answered-questions"
+    *ngFor="let answeredQuestion of answeredQuestions"
+  >
+    <card-element [answeredQuestion]="answeredQuestion"></card-element>
+  </div>
+</div> -->
