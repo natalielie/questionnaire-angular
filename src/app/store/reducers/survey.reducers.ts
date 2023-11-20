@@ -58,11 +58,35 @@ export const surveyReducers = createReducer(
   on(SurveyActions.answeredQuestionsLoaded, (state, { questionsResponse }) => {
     const result = {
       ...state,
-      questions: questionsResponse,
+      answeredQuestions: questionsResponse,
     };
     return result;
   }),
   on(SurveyActions.answeredQuestionsLoadError, (state, { error }) => {
+    const result = {
+      ...state,
+      questions: [],
+      error: error,
+    };
+    return result;
+  }),
+  on(SurveyActions.getUnansweredQuestions, (state) => {
+    const result = {
+      ...state,
+    };
+    return result;
+  }),
+  on(
+    SurveyActions.unansweredQuestionsLoaded,
+    (state, { questionsResponse }) => {
+      const result = {
+        ...state,
+        questions: questionsResponse,
+      };
+      return result;
+    }
+  ),
+  on(SurveyActions.unansweredQuestionsLoadError, (state, { error }) => {
     const result = {
       ...state,
       questions: [],

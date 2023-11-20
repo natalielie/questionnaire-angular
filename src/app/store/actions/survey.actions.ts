@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IAnswer, IQuestion } from 'src/app/interfaces/survey.interface';
 
-/** actions for getting assessments */
 export const getQuestions = createAction('[Questions] Get Questions');
 
 export const questionsLoaded = createAction(
@@ -14,21 +13,20 @@ export const questionsLoadError = createAction(
   props<{ error: string }>()
 );
 
-/** actions for getting assessment reports */
-export const getAnswerByQuestionId = createAction(
-  '[Answers] Get Answers',
-  props<{ questionId: string }>()
-);
+// export const getAnswerByQuestionId = createAction(
+//   '[Answers] Get Answers',
+//   props<{ questionId: string }>()
+// );
 
-export const answersLoaded = createAction(
-  '[Answers] Answers Loaded',
-  props<{ answerResponse: IAnswer }>()
-);
+// export const answersLoaded = createAction(
+//   '[Answers] Answers Loaded',
+//   props<{ answerResponse: IAnswer }>()
+// );
 
-export const answersLoadError = createAction(
-  '[Answers] Answers Not Loaded',
-  props<{ error: string }>()
-);
+// export const answersLoadError = createAction(
+//   '[Answers] Answers Not Loaded',
+//   props<{ error: string }>()
+// );
 
 /** unanswered questions */
 export const getUnansweredQuestions = createAction(
@@ -61,14 +59,14 @@ export const answeredQuestionsLoadError = createAction(
 );
 
 /** answers */
-export const getAnswers = createAction('[Answers] Get Answers');
+export const setAnswer = createAction('[Answers] Set Answer');
 
-// export const answeredQuestionsLoaded = createAction(
-//   '[Answers] Unanswered Answers Loaded',
-//   props<{ questionsResponse: IQuestion[] }>()
-// );
+export const setAnswerLoaded = createAction(
+  '[Answers] Answer the Question Loaded',
+  props<{ answerResponse: IAnswer[] }>()
+);
 
-// export const answeredQuestionsLoadError = createAction(
-//   '[Answers] Unanswered Answers Not Loaded',
-//   props<{ error: string }>()
-// );
+export const setAanswerLoadError = createAction(
+  '[Answers] Answer the Question Not Loaded',
+  props<{ error: string }>()
+);

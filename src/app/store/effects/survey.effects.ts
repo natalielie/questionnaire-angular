@@ -48,7 +48,7 @@ export class SurveyEffects {
               questionsResponse: storageValue,
             });
           } catch {
-            localStorage.removeItem('state');
+            //localStorage.removeItem('state');
           }
         }
         return SurveyActions.answeredQuestionsLoadError({
@@ -73,7 +73,9 @@ export class SurveyEffects {
           });
         }
         answeredQuestions.forEach((answered) => {
-          questions.filter((question) => question.id === answered.id);
+          questions = questions.filter(
+            (question) => question.id !== answered.id
+          );
         });
 
         if (questions) {
@@ -82,10 +84,32 @@ export class SurveyEffects {
               questionsResponse: questions,
             });
           } catch {
-            localStorage.removeItem('state');
+            //localStorage.removeItem('state');
           }
         }
         return SurveyActions.unansweredQuestionsLoadError({
+          error: 'Questions loading failed',
+        });
+      })
+    )
+  );
+
+  public answerTheQuestion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SurveyActions.setAnswer),
+
+      map(() => {
+        const storageValue = this.localStorageService.getAllQuestions();
+        if (storageValue) {
+          try {
+            return SurveyActions.questionsLoaded({
+              questionsResponse: storageValue,
+            });
+          } catch {
+            localStorage.removeItem('state');
+          }
+        }
+        return SurveyActions.questionsLoadError({
           error: 'Questions loading failed',
         });
       })
