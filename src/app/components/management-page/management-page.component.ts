@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 
 import { IQuestion } from 'src/app/interfaces/survey.interface';
-import { MatSortModule } from '@angular/material/sort';
+import { MatSortModule, Sort } from '@angular/material/sort';
 import {
   selectAllQuestions,
   selectSurveyData,
@@ -15,8 +15,9 @@ import {
 import * as SurveyActions from '../../store/actions/survey.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers/survey.reducers';
-import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { createPath } from 'src/app/shared/globals';
+import { LocalStorageService } from 'src/app/services/localStorage.service';
 
 @Component({
   selector: 'app-management-page',
@@ -52,14 +53,14 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private location: Location,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
     this.store.dispatch(SurveyActions.getQuestions());
 
     this.dataSource$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-      console.log(value);
       this.allDataSource!.data = value;
 
       if (this.paginator) {
@@ -105,8 +106,7 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  openDialog(action: string, obj: { action: any }) {
-    obj.action = action;
+  openDialog(action: string, obj: IQuestion) {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '250px',
       data: obj,
@@ -114,41 +114,29 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
 
     dialogRef
       .afterClosed()
-      .subscribe((result: { event: string; data: any }) => {
-        if (result.event == 'Add') {
-          // this.addRowData(result.data);
-        } else if (result.event == 'Update') {
-          // this.updateRowData(result.data);
-        } else if (result.event == 'Delete') {
-          // this.deleteRowData(result.data);
+      .subscribe((result: { event: string; data: IQuestion }) => {
+        if (result.event == 'Delete') {
+          this.deleteRowData(result.data);
         }
       });
   }
 
-  // addRowData(row_obj){
-  //   var d = new Date();
-  //   this.dataSource.push({
-  //     id:d.getTime(),
-  //     name:row_obj.name
-  //   });
-  //   this.table.renderRows();
-
-  // }
-  // updateRowData(row_obj){
-  //   this.dataSource = this.dataSource.filter((value,key)=>{
-  //     if(value.id == row_obj.id){
-  //       value.name = row_obj.name;
-  //     }
-  //     return true;
-  //   });
-  // }
-  // deleteRowData(row_obj){
-  //   this.dataSource = this.dataSource.filter((value,key)=>{
-  //     return value.id != row_obj.id;
-  //   });
-  // }
+  deleteRowData(question: IQuestion) {
+    this.dataSource$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      value.forEach((element) => {
+        if (element.id === question.id) {
+          this.localStorageService.deleteQuestion(element.id);
+        }
+      });
+    });
+    window.location.reload();
+  }
 
   goToCreateQuestion(): void {
+    this.router.navigate([createPath]);
+  }
+
+  editQuestion(): void {
     this.router.navigate([createPath]);
   }
 }

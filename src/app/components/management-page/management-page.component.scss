@@ -1,6 +1,6 @@
 .list-title {
   float: left;
-  margin: 50px 100px;
+  margin: 50px 80px;
 }
 
 .go-to-create-page {
@@ -27,4 +27,8 @@ tr {
 
 tr:hover {
   background-color: #ddd8e6;
+}
+
+button {
+  margin: 5px;
 }
