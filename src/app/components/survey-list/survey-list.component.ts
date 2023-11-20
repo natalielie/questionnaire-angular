@@ -11,13 +11,14 @@ import {
   selectUnansweredQuestions,
 } from 'src/app/store/selectors/survey.selectors';
 import * as SurveyActions from '../../store/actions/survey.actions';
+import { IQuestion } from 'src/app/interfaces/survey.interface';
 
 @Component({
   selector: 'app-survey-list',
   templateUrl: './survey-list.component.html',
   styleUrls: ['./survey-list.component.scss'],
 })
-export class SurveyListComponent implements OnInit {
+export class SurveyListComponent implements OnInit, OnDestroy {
   unansweredQuestions$ = this.store.select(selectUnansweredQuestions);
   answeredQuestions$ = this.store.select(selectAnsweredQuestions);
 
@@ -31,12 +32,11 @@ export class SurveyListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(SurveyActions.getUnansweredQuestions());
-    this.store.dispatch(SurveyActions.getAnsweredQuestions());
-    console.log(this.answeredQuestions$);
+    // this.store.dispatch(SurveyActions.getAnsweredQuestions());
   }
 
-  // ngOnDestroy(): void {
-  //   this.destroy$.next(true);
-  //   this.destroy$.complete();
-  // }
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
 }

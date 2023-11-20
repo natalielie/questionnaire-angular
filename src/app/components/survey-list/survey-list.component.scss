@@ -5,13 +5,12 @@
 
 .cards-wrapper {
   width: 50%;
-  float: left;
   display: grid;
-  grid-gap: 5px;
+  grid-gap: 20px;
   grid-template-columns: 1fr 1fr;
-  padding: 5px;
-  align-items: baseline;
-  justify-items: center;
+
+  margin-top: 120px;
+  margin-left: -360px;
 }
 
 .list-title {
@@ -23,8 +22,8 @@
 .cards {
   width: fit-content;
   grid-column: span 1;
-  padding: 50px 0 0 0;
-  grid-column-start: 1;
+  // padding: 50px 0 0 0;
+  //grid-column-start: 1;
 }
 
 .questions-not-found {

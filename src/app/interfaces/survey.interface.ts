@@ -8,12 +8,12 @@ export interface ISurvey {
 export interface IQuestion {
   id: string;
   question: string;
-  type: string;
+  type: number;
   answers: string[];
   creationDate: Date;
 }
 
 export interface IAnswer {
-  answer: string[];
   questionId: string;
+  answer: string[];
 }

@@ -1,11 +1,11 @@
 <div class="content-wrapper">
+  <div class="cards-title unanswered">
+    <h1 class="list-title">Unanswered Questions</h1>
+  </div>
   <div
     class="cards-wrapper unanswered"
     *ngIf="unansweredQuestions$ | async as unansweredQuestions"
   >
-    <div class="cards-title unanswered">
-      <h1 class="list-title">Unanswered Questions</h1>
-    </div>
     <div
       class="cards unanswered-questions"
       *ngFor="let unansweredQuestion of unansweredQuestions"
@@ -17,21 +17,21 @@
     </div>
   </div>
 
+  <!-- <div class="cards-title answered">
+    <h1 class="list-title">Answered Questions</h1>
+  </div>
   <div
     class="cards-wrapper answered"
     *ngIf="answeredQuestions$ | async as answeredQuestions"
   >
-    <div class="cards-title answered">
-      <h1 class="list-title">Answered Questions</h1>
-    </div>
     <div
       class="cards answered-questions"
       *ngFor="let answeredQuestion of answeredQuestions"
     >
       <card-element [answeredQuestion]="answeredQuestion"></card-element>
-    </div>
-    <div class="questions-not-found" *ngIf="answeredQuestions.length === 0">
+    </div> -->
+  <!-- <div class="questions-not-found" *ngIf="answeredQuestions.length === 0">
       <h3>There's no answered question</h3>
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 </div>

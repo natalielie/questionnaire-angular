@@ -27,6 +27,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SurveyEffects } from './store/effects/survey.effects';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { CreateSurveyComponent } from './components/create-survey/create-survey.component';
 import { ManagementPageComponent } from './components/management-page/management-page.component';
@@ -34,6 +35,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SurveyListComponent } from './components/survey-list/survey-list.component';
 import { AppState, surveyReducers } from './store/reducers/survey.reducers';
 import { CardElement } from './components/survey-list/card-element/card-element.component';
+import { DialogBoxComponent } from './components/management-page/dialog-box/dialog-box.component';
 
 // const surveyReducerMap: ActionReducerMap<AppState> = {
 //   surveyData: surveyReducers,
@@ -47,6 +49,7 @@ import { CardElement } from './components/survey-list/card-element/card-element.
     SurveyListComponent,
     NavbarComponent,
     CardElement,
+    DialogBoxComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +70,7 @@ import { CardElement } from './components/survey-list/card-element/card-element.
     MatSelectModule,
     MatPaginatorModule,
     MatDialogModule,
+    MatCheckboxModule,
     //StoreModule.forRoot(surveyReducerMap),
     StoreModule.forRoot({ surveyData: surveyReducers }),
     EffectsModule.forRoot([SurveyEffects]),
