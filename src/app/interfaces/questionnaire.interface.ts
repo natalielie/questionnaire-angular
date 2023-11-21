@@ -8,7 +8,7 @@ export interface IQuestionnaire {
 export interface IQuestion {
   id: string;
   question: string;
-  type: number;
+  type: string;
   answers: string[];
   creationDate: Date;
 }

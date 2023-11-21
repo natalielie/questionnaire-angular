@@ -17,7 +17,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { createPath, editPath } from 'src/app/shared/globals';
-import { LocalStorageService } from 'src/app/services/localStorage.service';
+import { QuestionService } from 'src/app/services/question.service';
 import { HttpParams } from '@angular/common/http';
 
 @Component({
@@ -55,7 +55,7 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private location: Location,
     public dialog: MatDialog,
-    private localStorageService: LocalStorageService
+    private questionService: QuestionService
   ) {}
 
   ngOnInit(): void {
@@ -94,13 +94,13 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     this.location.go(urlTree.toString());
   }
 
-  questionTypeChange(type: number): string {
+  questionTypeChange(type: string): string {
     switch (type) {
-      case 0:
+      case 'single':
         return 'Single Choice';
-      case 1:
+      case 'multi':
         return 'Multiple Choice';
-      case 2:
+      case 'open':
         return 'Open';
       default:
         return 'Not Specified';
@@ -126,7 +126,7 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     this.dataSource$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       value.forEach((element) => {
         if (element.id === question.id) {
-          this.localStorageService.deleteQuestion(element.id);
+          this.questionService.deleteQuestion(element.id);
         }
       });
     });
@@ -139,6 +139,8 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
 
   editQuestion(question: IQuestion): void {
     //const params = new HttpParams().set('id', question.id);
-    this.router.navigate([`${editPath}${question.id}`]);
+    this.router.navigate(['create-questionnaire/'], {
+      queryParams: { id: question.id },
+    });
   }
 }

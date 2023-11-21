@@ -26,7 +26,7 @@ import {
   selectAnsweredQuestions,
   selectAnswers,
 } from 'src/app/store/selectors/questionnaire.selectors';
-import { LocalStorageService } from 'src/app/services/localStorage.service';
+import { QuestionService } from 'src/app/services/question.service';
 
 @Component({
   selector: 'card-element',
@@ -46,7 +46,7 @@ export class CardElement implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
-    private localStorageService: LocalStorageService
+    private questionService: QuestionService
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class CardElement implements OnInit, OnDestroy {
         }
       })
     );
-    if (this.question.type === 1) {
+    if (this.question.type === 'multi') {
       this.questionForm = this.formBuilder.group({
         answers: this.formBuilder.array([], [Validators.required]),
       });
@@ -120,7 +120,7 @@ export class CardElement implements OnInit, OnDestroy {
       questionId: this.question.id,
       answer: value.answers,
     };
-    this.localStorageService.answerTheQuestion(answer);
+    this.questionService.answerTheQuestion(answer);
     window.location.reload();
   }
 }

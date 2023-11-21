@@ -4,6 +4,13 @@
   height: fit-content;
 }
 
+.button-wrapper {
+  align-self: start;
+  margin-left: -90px;
+  margin-top: -3px;
+  position: absolute;
+}
+
 .list-title {
   margin: 50px 0;
 }
