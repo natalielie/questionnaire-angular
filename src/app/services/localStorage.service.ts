@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IAnswer, IQuestion } from '../interfaces/survey.interface';
+import { IAnswer, IQuestion } from '../interfaces/questionnaire.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -40,6 +40,7 @@ export class LocalStorageService {
     let allAnsweredQuestions: IQuestion[] = this.getAnsweredQuestions();
     let currentQuestion: IQuestion;
     currentQuestion = allQuestions.filter((question) => question.id === id)[0];
+    console.log(currentQuestion);
     if (allAnsweredQuestions) {
       allAnsweredQuestions.push(currentQuestion);
       localStorage.setItem(
@@ -47,7 +48,10 @@ export class LocalStorageService {
         JSON.stringify(allAnsweredQuestions)
       );
     } else {
-      localStorage.setItem('answeredQuestions', JSON.stringify([id]));
+      localStorage.setItem(
+        'answeredQuestions',
+        JSON.stringify([currentQuestion])
+      );
     }
   }
 
@@ -58,7 +62,7 @@ export class LocalStorageService {
   getAnsweredQuestions(): IQuestion[] {
     return JSON.parse(localStorage.getItem('answeredQuestions')!);
   }
-  getAnswers(): IQuestion[] {
+  getAnswers(): IAnswer[] {
     return JSON.parse(localStorage.getItem('answers')!);
   }
 
@@ -77,7 +81,7 @@ export class LocalStorageService {
       }
     });
     answers.forEach((answer, index) => {
-      if (answer.id === questionId) {
+      if (answer.questionId === questionId) {
         answers.splice(index, 1);
       }
     });

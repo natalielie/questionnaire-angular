@@ -74,7 +74,11 @@
             Action
           </th>
           <td mat-cell *matCellDef="let element" class="action-link">
-            <button mat-raised-button color="accent" (click)="editQuestion()">
+            <button
+              mat-raised-button
+              color="accent"
+              (click)="editQuestion(element)"
+            >
               Edit
             </button>
 

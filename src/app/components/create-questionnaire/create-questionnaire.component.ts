@@ -11,14 +11,18 @@ import {
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { LocalStorageService } from 'src/app/services/localStorage.service';
-import { IQuestion } from 'src/app/interfaces/survey.interface';
-import { Router } from '@angular/router';
+import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
+import { ActivatedRoute, Router } from '@angular/router';
 import { managementPath } from 'src/app/shared/globals';
+import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
+import { Store } from '@ngrx/store';
+import { selectAllQuestions } from 'src/app/store/selectors/questionnaire.selectors';
+import * as SurveyActions from '../../store/actions/questionnaire.actions';
 
 @Component({
-  selector: 'app-create-survey',
-  templateUrl: './create-survey.component.html',
-  styleUrls: ['./create-survey.component.scss'],
+  selector: 'app-create-questionnaire',
+  templateUrl: './create-questionnaire.component.html',
+  styleUrls: ['./create-questionnaire.component.scss'],
 })
 export class CreateSurveyComponent implements OnInit {
   /**
@@ -28,6 +32,7 @@ export class CreateSurveyComponent implements OnInit {
   @ViewChild('questionForm', { static: false })
   formReference?: FormGroupDirective;
   questionForm!: FormGroup;
+  isEdit!: boolean;
 
   allQuestionTypes: string[] = [
     'Single Choice Question',
@@ -43,7 +48,9 @@ export class CreateSurveyComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store<AppState>
   ) {}
 
   /**
@@ -64,6 +71,37 @@ export class CreateSurveyComponent implements OnInit {
         ]),
       ]),
     });
+    if (this.route.snapshot.params['id']) {
+      this.isEdit = true;
+
+      this.store.dispatch(SurveyActions.getQuestions());
+      this.store.select(selectAllQuestions).subscribe((questions) => {
+        let selectedQuestion: IQuestion = questions.find(
+          (question) => question.id === this.route.snapshot.params['id']
+        )!;
+        this.questionForm = this.formBuilder.group({
+          questionType: new FormControl<number>(selectedQuestion.type),
+          question: new FormControl<string>(selectedQuestion.question, [
+            Validators.required,
+            Validators.minLength(1),
+            Validators.maxLength(50),
+          ]),
+          possibleAnswers: this.formBuilder.array([
+            new FormControl<string>('', [
+              Validators.minLength(1),
+              Validators.maxLength(50),
+            ]),
+          ]),
+        });
+        // this.questionForm.patchValue({
+        //   id: selectedQuestion.id,
+        //   question: selectedQuestion.question,
+        //   type: selectedQuestion.type,
+        //   answers: selectedQuestion.answers,
+        //   creationDate: selectedQuestion.creationDate,
+        // });
+      });
+    }
   }
 
   get possibleAnswers(): FormArray {
@@ -74,29 +112,6 @@ export class CreateSurveyComponent implements OnInit {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
-
-  // questionTypeChange(data: MatRadioChange): void {
-  //   switch (data.value) {
-  //     case 0:
-  //       this.questionForm.addControl(
-  //         'singleChoiceQuestion',
-  //         new FormControl('', Validators.required)
-  //       );
-  //       break;
-  //     case 1:
-  //       this.questionForm.addControl(
-  //         'multipleChoiceQuestion',
-  //         new FormControl('', Validators.required)
-  //       );
-  //       break;
-  //     case 2:
-  //       this.questionForm.addControl(
-  //         'openQuestion',
-  //         new FormControl('', Validators.required)
-  //       );
-  //       break;
-  //   }
-  // }
 
   addNewOption(): void {
     this.possibleAnswers.push(this.formBuilder.control(''));

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import * as SurveyActions from '../actions/survey.actions';
+import * as SurveyActions from '../actions/questionnaire.actions';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/localStorage.service';
 
@@ -31,6 +31,28 @@ export class SurveyEffects {
         }
         return SurveyActions.questionsLoadError({
           error: 'Questions loading failed',
+        });
+      })
+    )
+  );
+
+  public getAnswers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SurveyActions.getAnswers),
+
+      map(() => {
+        const storageValue = this.localStorageService.getAnswers();
+        if (storageValue) {
+          try {
+            return SurveyActions.answersLoaded({
+              answerResponse: storageValue,
+            });
+          } catch {
+            //localStorage.removeItem('state');
+          }
+        }
+        return SurveyActions.answersLoadError({
+          error: 'Answers loading failed',
         });
       })
     )
@@ -88,28 +110,6 @@ export class SurveyEffects {
           }
         }
         return SurveyActions.unansweredQuestionsLoadError({
-          error: 'Questions loading failed',
-        });
-      })
-    )
-  );
-
-  public answerTheQuestion$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(SurveyActions.setAnswer),
-
-      map(() => {
-        const storageValue = this.localStorageService.getAllQuestions();
-        if (storageValue) {
-          try {
-            return SurveyActions.questionsLoaded({
-              questionsResponse: storageValue,
-            });
-          } catch {
-            localStorage.removeItem('state');
-          }
-        }
-        return SurveyActions.questionsLoadError({
           error: 'Questions loading failed',
         });
       })

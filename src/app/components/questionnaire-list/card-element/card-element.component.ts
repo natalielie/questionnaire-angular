@@ -2,10 +2,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Store } from '@ngrx/store';
-import { IAnswer, IQuestion } from 'src/app/interfaces/survey.interface';
-import { AppState } from 'src/app/store/reducers/survey.reducers';
+import { IAnswer, IQuestion } from 'src/app/interfaces/questionnaire.interface';
+import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 
-import * as SurveyActions from '../../../store/actions/survey.actions';
+import * as SurveyActions from '../../../store/actions/questionnaire.actions';
 import {
   FormGroupDirective,
   FormGroup,
@@ -14,9 +14,18 @@ import {
   Validators,
   FormArray,
 } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  Subscribable,
+  Subscription,
+  takeUntil,
+} from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { selectAnsweredQuestions } from 'src/app/store/selectors/survey.selectors';
+import {
+  selectAnsweredQuestions,
+  selectAnswers,
+} from 'src/app/store/selectors/questionnaire.selectors';
 import { LocalStorageService } from 'src/app/services/localStorage.service';
 
 @Component({
@@ -27,9 +36,10 @@ import { LocalStorageService } from 'src/app/services/localStorage.service';
 export class CardElement implements OnInit, OnDestroy {
   @Input() question!: IQuestion;
   answeredQuestions$ = this.store.select(selectAnsweredQuestions);
-  isAnswered: boolean = false;
+  isAnswered!: boolean;
   formReference?: FormGroupDirective;
   questionForm!: FormGroup;
+  chosenAnswers!: IAnswer[];
 
   $destroy: Subject<boolean> = new Subject<boolean>();
 
@@ -40,25 +50,33 @@ export class CardElement implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    //this.store.dispatch(SurveyActions.getAnsweredQuestions());
-    // this.answeredQuestions$.pipe(takeUntil(this.$destroy)).subscribe((value) =>
-    //   value.forEach((question) => {
-    //     if (question === this.question.id) {
-    //       this.isAnswered = true;
-    //     } else {
-    //       this.isAnswered = false;
-    //     }
-    //   })
-    // );
+    this.store.dispatch(SurveyActions.getAnswers());
+    this.answeredQuestions$.pipe(takeUntil(this.$destroy)).subscribe((value) =>
+      value.forEach((question) => {
+        if (question.id === this.question.id) {
+          this.isAnswered = true;
+        } else {
+          this.isAnswered = false;
+        }
+      })
+    );
     if (this.question.type === 1) {
       this.questionForm = this.formBuilder.group({
-        answers: this.formBuilder.array([], [Validators.required]), //('', Validators.required),
+        answers: this.formBuilder.array([], [Validators.required]),
       });
     } else {
       this.questionForm = this.formBuilder.group({
         answers: new FormControl<string>('', Validators.required),
       });
     }
+    this.store
+      .select(selectAnswers)
+      .pipe(takeUntil(this.$destroy))
+      .subscribe((answers) => {
+        this.chosenAnswers = answers.filter(
+          (answer) => answer.questionId === this.question.id
+        );
+      });
   }
 
   ngOnDestroy(): void {
@@ -90,6 +108,11 @@ export class CardElement implements OnInit, OnDestroy {
       });
     }
   }
+
+  // get chosenAnswers(): Subscribable<string[]>{
+  //   return
+  //   );
+  // }
 
   onSubmit(): void {
     let value = this.questionForm.getRawValue();

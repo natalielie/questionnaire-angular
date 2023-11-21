@@ -26,20 +26,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { SurveyEffects } from './store/effects/survey.effects';
+import { SurveyEffects } from './store/effects/questionnaire.effects';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-import { CreateSurveyComponent } from './components/create-survey/create-survey.component';
+import { CreateSurveyComponent } from './components/create-questionnaire/create-questionnaire.component';
 import { ManagementPageComponent } from './components/management-page/management-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { SurveyListComponent } from './components/survey-list/survey-list.component';
-import { AppState, surveyReducers } from './store/reducers/survey.reducers';
-import { CardElement } from './components/survey-list/card-element/card-element.component';
+import { SurveyListComponent } from './components/questionnaire-list/questionnaire-list.component';
+import {
+  AppState,
+  surveyReducers,
+} from './store/reducers/questionnaire.reducers';
+import { CardElement } from './components/questionnaire-list/card-element/card-element.component';
 import { DialogBoxComponent } from './components/management-page/dialog-box/dialog-box.component';
-
-// const surveyReducerMap: ActionReducerMap<AppState> = {
-//   surveyData: surveyReducers,
-// };
 
 @NgModule({
   declarations: [

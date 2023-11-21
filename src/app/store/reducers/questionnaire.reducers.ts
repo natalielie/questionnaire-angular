@@ -1,11 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 
-import * as SurveyActions from '../actions/survey.actions';
+import * as SurveyActions from '../actions/questionnaire.actions';
 import {
   IAnswer,
   IQuestion,
   ISurvey,
-} from 'src/app/interfaces/survey.interface';
+} from 'src/app/interfaces/questionnaire.interface';
 
 export interface AppState {
   // surveyData: ISurvey;
@@ -90,6 +90,27 @@ export const surveyReducers = createReducer(
     const result = {
       ...state,
       questions: [],
+      error: error,
+    };
+    return result;
+  }),
+  on(SurveyActions.getAnswers, (state) => {
+    const result = {
+      ...state,
+    };
+    return result;
+  }),
+  on(SurveyActions.answersLoaded, (state, { answerResponse }) => {
+    const result = {
+      ...state,
+      answers: answerResponse,
+    };
+    return result;
+  }),
+  on(SurveyActions.answersLoadError, (state, { error }) => {
+    const result = {
+      ...state,
+      answers: [],
       error: error,
     };
     return result;

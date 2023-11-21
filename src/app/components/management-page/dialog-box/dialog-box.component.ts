@@ -1,6 +1,6 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IQuestion } from 'src/app/interfaces/survey.interface';
+import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
 
 @Component({
   selector: 'app-dialog-box',

@@ -6,18 +6,19 @@ import { Subject, takeUntil } from 'rxjs';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 
-import { IQuestion } from 'src/app/interfaces/survey.interface';
+import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import {
   selectAllQuestions,
   selectSurveyData,
-} from 'src/app/store/selectors/survey.selectors';
-import * as SurveyActions from '../../store/actions/survey.actions';
+} from 'src/app/store/selectors/questionnaire.selectors';
+import * as SurveyActions from '../../store/actions/questionnaire.actions';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/reducers/survey.reducers';
+import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
-import { createPath } from 'src/app/shared/globals';
+import { createPath, editPath } from 'src/app/shared/globals';
 import { LocalStorageService } from 'src/app/services/localStorage.service';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-management-page',
@@ -106,10 +107,10 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  openDialog(action: string, obj: IQuestion) {
+  openDialog(action: string, question: IQuestion) {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '250px',
-      data: obj,
+      data: question,
     });
 
     dialogRef
@@ -136,7 +137,8 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     this.router.navigate([createPath]);
   }
 
-  editQuestion(): void {
-    this.router.navigate([createPath]);
+  editQuestion(question: IQuestion): void {
+    //const params = new HttpParams().set('id', question.id);
+    this.router.navigate([`${editPath}${question.id}`]);
   }
 }

@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <!-- <div class="cards-title answered">
+  <div class="cards-title answered">
     <h1 class="list-title">Answered Questions</h1>
   </div>
   <div
@@ -28,10 +28,10 @@
       class="cards answered-questions"
       *ngFor="let answeredQuestion of answeredQuestions"
     >
-      <card-element [answeredQuestion]="answeredQuestion"></card-element>
-    </div> -->
-  <!-- <div class="questions-not-found" *ngIf="answeredQuestions.length === 0">
+      <card-element [question]="answeredQuestion"></card-element>
+    </div>
+    <!-- <div class="questions-not-found" *ngIf="answeredQuestions.length === 0">
       <h3>There's no answered question</h3>
     </div> -->
-  <!-- </div> -->
+  </div>
 </div>
