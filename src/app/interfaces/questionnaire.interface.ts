@@ -15,5 +15,6 @@ export interface IQuestion {
 
 export interface IAnswer {
   questionId: string;
+  answerDate: Date;
   answer: string[];
 }

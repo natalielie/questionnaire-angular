@@ -98,9 +98,15 @@ export class CreateQuestionnaireComponent implements OnInit {
             Validators.minLength(1),
             Validators.maxLength(50),
           ]),
-          possibleAnswers: this.initAnswers(this.selectedQuestion),
+          possibleAnswers: this.formBuilder.array(
+            this.selectedQuestion.answers
+          ),
         });
       });
+    }
+
+    if (this.selectedQuestion.type === 'open') {
+      this.addNewOption();
     }
   }
 
@@ -146,15 +152,25 @@ export class CreateQuestionnaireComponent implements OnInit {
 
   onSubmit(): void {
     if (this.questionForm.valid) {
-      let data = this.questionForm.getRawValue();
-      let type = data.questionType;
+      if (this.questionForm.controls['questionType'].value === 'open') {
+        for (
+          let i =
+            this.questionForm.controls['possibleAnswers'].value.length - 1;
+          i >= 0;
+          i--
+        ) {
+          this.removeOption(i);
+        }
+        this.addNewOption();
+      }
 
+      let data = this.questionForm.getRawValue();
       if (!this.isEdit) {
         let newQuestion: IQuestion = {
           id: this.generateID(),
           question: data.question,
-          type: type,
-          answers: data.possibleAnswers ?? null,
+          type: data.questionType,
+          answers: data.possibleAnswers,
           creationDate: new Date(),
         };
         this.questionService.createQuestion(newQuestion);
@@ -165,8 +181,8 @@ export class CreateQuestionnaireComponent implements OnInit {
         let updatedQuestion: IQuestion = {
           id: this.selectedQuestion.id,
           question: data.question,
-          type: type,
-          answers: data.possibleAnswers ?? null,
+          type: data.questionType,
+          answers: data.possibleAnswers,
           creationDate: new Date(),
         };
         this.questionService.updateQuestion(updatedQuestion);
@@ -179,14 +195,15 @@ export class CreateQuestionnaireComponent implements OnInit {
     }
   }
 
-  initAnswers(
-    question: IQuestion
-  ): FormArray<FormControl<string | null>> | null {
-    if (question.type !== 'open') {
-      return this.formBuilder.array(question.answers);
-    }
-    return null;
-  }
+  // initAnswers(
+  //   question: IQuestion
+  // ): FormArray<FormControl<string | null>> | null {
+  //   if (question.type !== 'open') {
+  //     return this.formBuilder.array(question.answers);
+  //   }
+  //   else
+  //   return null;
+  // }
 
   generateID(): string {
     return uuid.v4();

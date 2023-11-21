@@ -67,18 +67,36 @@
   </div>
 
   <div *ngIf="isAnswered">
-    <mat-card class="example-card">
-      <mat-card-header>
-        <mat-card-title>{{ question.question }}</mat-card-title>
-        <mat-card-subtitle>Answer:</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="answers-list">
-          <div *ngFor="let answer of chosenAnswers">
-            {{ answer.answer }}
+    <mat-card class="example-card"
+      ><div *ngFor="let answer of chosenAnswers">
+        <mat-card-header>
+          <mat-card-title>{{ question.question }}</mat-card-title>
+
+          <mat-card-subtitle
+            >Answer Date:
+            {{ answer.answerDate | date : "medium" }}</mat-card-subtitle
+          >
+          <mat-card-subtitle>Answer:</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="answers-list">
+            <div>
+              {{ answer.answer }}
+            </div>
           </div>
-        </div>
-      </mat-card-content>
+        </mat-card-content>
+      </div>
+      <div class="change-answer-wrapper">
+        <button
+          mat-raised-button
+          class="btn-change-answer"
+          type="submit"
+          color="accent"
+          (click)="changeAnswer(question)"
+        >
+          Change Answer
+        </button>
+      </div>
     </mat-card>
   </div>
 </div>

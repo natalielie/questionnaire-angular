@@ -90,8 +90,29 @@ export class QuestionService {
       (question) => question.id === initQuestion.id
     )!;
     currentQuestion.question = initQuestion.question;
+    currentQuestion.creationDate = initQuestion.creationDate;
+    currentQuestion.type = initQuestion.type;
     currentQuestion.answers = initQuestion.answers;
+    allQuestions = allQuestions.filter(
+      (question) => question.id !== initQuestion.id
+    );
     allQuestions.push(currentQuestion);
     localStorage.setItem('questions', JSON.stringify(allQuestions));
+  }
+
+  changeAnswer(question: IQuestion): void {
+    let answeredQuestions = this.localStorageService.getAnsweredQuestions();
+    let answers = this.localStorageService.getAnswers();
+    const filteredAnsweredQuestions = answeredQuestions.filter(
+      (answeredQuestion) => answeredQuestion.id !== question.id
+    );
+    const filteredAnswers = answers.filter(
+      (answer) => answer.questionId !== question.id
+    );
+    localStorage.setItem(
+      'answeredQuestions',
+      JSON.stringify(filteredAnsweredQuestions)
+    );
+    localStorage.setItem('answers', JSON.stringify(filteredAnswers));
   }
 }

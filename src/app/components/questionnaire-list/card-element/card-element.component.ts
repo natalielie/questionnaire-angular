@@ -25,6 +25,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import {
   selectAnsweredQuestions,
   selectAnswers,
+  selectUnansweredQuestions,
 } from 'src/app/store/selectors/questionnaire.selectors';
 import { QuestionService } from 'src/app/services/question.service';
 
@@ -41,6 +42,8 @@ export class CardElement implements OnInit, OnDestroy {
   questionForm!: FormGroup;
   chosenAnswers!: IAnswer[];
 
+  unansweredQuestions$ = this.store.select(selectUnansweredQuestions);
+
   $destroy: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -51,15 +54,22 @@ export class CardElement implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(QuestionnaireActions.getAnswers());
-    this.answeredQuestions$.pipe(takeUntil(this.$destroy)).subscribe((value) =>
-      value.forEach((question) => {
-        if (question.id === this.question.id) {
+    this.answeredQuestions$
+      .pipe(takeUntil(this.$destroy))
+      .subscribe((value) => {
+        if (value.find((question) => question.id === this.question.id)) {
           this.isAnswered = true;
         } else {
           this.isAnswered = false;
         }
-      })
-    );
+      });
+    // this.unansweredQuestions$
+    // .pipe(takeUntil(this.$destroy))
+    // .subscribe((value) => {
+    //   this.answeredQuestions = value.sort(
+    //     (a, b) => b.creationDate.getTime() - a.creationDate.getTime()
+    //   );
+    // });
     if (this.question.type === 'multi') {
       this.questionForm = this.formBuilder.group({
         answers: this.formBuilder.array([], [Validators.required]),
@@ -109,13 +119,20 @@ export class CardElement implements OnInit, OnDestroy {
     }
   }
 
+  changeAnswer(question: IQuestion): void {
+    this.questionService.changeAnswer(question);
+    window.location.reload();
+  }
+
   onSubmit(): void {
     let value = this.questionForm.getRawValue();
     const answer: IAnswer = {
       questionId: this.question.id,
+      answerDate: new Date(),
       answer: value.answers,
     };
     this.questionService.answerTheQuestion(answer);
+    this.isAnswered = true;
     window.location.reload();
   }
 }
