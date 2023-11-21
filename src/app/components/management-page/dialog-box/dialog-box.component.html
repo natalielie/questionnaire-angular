@@ -1,15 +1,17 @@
 <h1 mat-dialog-title>
-  <strong>{{ action }}</strong>
+  <strong>Delete Question</strong>
 </h1>
 <div mat-dialog-content>
-  <ng-template>
+  <p>
     Sure to delete <b>{{ data.question }}</b
     >?
-  </ng-template>
+  </p>
 </div>
-<div mat-dialog-actions>
-  <button mat-button mat-raised-button color="warn" (click)="remove()">
+<div class="button-wrapper" mat-dialog-actions>
+  <button class="btn-delete" mat-raised-button color="warn" (click)="remove()">
     Delete
   </button>
-  <button mat-raised-button (click)="closeDialog()">Cancel</button>
+  <button class="btn-cancel" mat-raised-button (click)="closeDialog()">
+    Cancel
+  </button>
 </div>

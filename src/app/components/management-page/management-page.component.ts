@@ -1,5 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -7,7 +14,6 @@ import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 
 import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
-import { MatSortModule, Sort } from '@angular/material/sort';
 import {
   selectAllQuestions,
   selectQuestionnaireData,
@@ -26,7 +32,8 @@ import { HttpParams } from '@angular/common/http';
   styleUrls: ['./management-page.component.scss'],
 })
 export class ManagementPageComponent implements OnInit, OnDestroy {
-  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
   displayedColumns: string[] = [
     'id',
     'question',
@@ -36,10 +43,10 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
   ];
   dataSource$ = this.store.select(selectAllQuestions);
   allDataSource = new MatTableDataSource<IQuestion>([]);
+
   page =
     Number.parseInt(
-      this.route.snapshot.queryParamMap.get('pageIndex') as string,
-      10
+      this.route.snapshot.queryParamMap.get('pageIndex') as string
     ) ?? 0;
   pageSize =
     Number.parseInt(
@@ -62,12 +69,13 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     this.store.dispatch(QuestionnaireActions.getQuestions());
 
     this.dataSource$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-      this.allDataSource!.data = value;
+      this.allDataSource.data = value;
+      this.allDataSource.paginator = this.paginator;
+      this.allDataSource.sort = this.sort;
 
       if (this.paginator) {
         this.paginator.pageIndex = this.page;
         this.paginator.pageSize = this.pageSize;
-        this.allDataSource.paginator = this.paginator;
       }
     });
   }
@@ -101,15 +109,15 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
       case 'multi':
         return 'Multiple Choice';
       case 'open':
-        return 'Open';
+        return 'Open Question';
       default:
         return 'Not Specified';
     }
   }
 
-  openDialog(action: string, question: IQuestion) {
+  openDialog(question: IQuestion) {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width: '250px',
+      width: '300px',
       data: question,
     });
 
@@ -133,12 +141,13 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
+  onMatSortChange() {}
+
   goToCreateQuestion(): void {
     this.router.navigate([createPath]);
   }
 
-  editQuestion(question: IQuestion): void {
-    //const params = new HttpParams().set('id', question.id);
+  goToEditQuestion(question: IQuestion): void {
     this.router.navigate(['create-questionnaire/'], {
       queryParams: { id: question.id },
     });

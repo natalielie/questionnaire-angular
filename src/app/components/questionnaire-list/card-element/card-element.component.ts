@@ -109,11 +109,6 @@ export class CardElement implements OnInit, OnDestroy {
     }
   }
 
-  // get chosenAnswers(): Subscribable<string[]>{
-  //   return
-  //   );
-  // }
-
   onSubmit(): void {
     let value = this.questionForm.getRawValue();
     const answer: IAnswer = {

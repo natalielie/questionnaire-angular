@@ -32,3 +32,30 @@ tr:hover {
 button {
   margin: 5px;
 }
+
+.mat-table {
+  display: table;
+}
+
+.mat-header-cell {
+  padding: 20px;
+}
+
+td {
+  text-align: center;
+  padding: 10px;
+}
+
+th {
+  text-align: center;
+  padding: 30px;
+}
+
+mat-paginator {
+  margin: 20px 28%;
+  position: absolute;
+}
+
+th.creationDate-column {
+  padding-left: 180px;
+}

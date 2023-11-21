@@ -40,8 +40,7 @@ export class QuestionService {
     let allAnsweredQuestions: IQuestion[] =
       this.localStorageService.getAnsweredQuestions();
     let currentQuestion: IQuestion;
-    currentQuestion = allQuestions.filter((question) => question.id === id)[0];
-    console.log(currentQuestion);
+    currentQuestion = allQuestions.find((question) => question.id === id)!;
     if (allAnsweredQuestions) {
       allAnsweredQuestions.push(currentQuestion);
       localStorage.setItem(
@@ -82,5 +81,17 @@ export class QuestionService {
       JSON.stringify(answeredQuestions)
     );
     localStorage.setItem('answers', JSON.stringify(answers));
+  }
+
+  updateQuestion(initQuestion: IQuestion): void {
+    let allQuestions: IQuestion[] = this.localStorageService.getAllQuestions();
+    let currentQuestion: IQuestion;
+    currentQuestion = allQuestions.find(
+      (question) => question.id === initQuestion.id
+    )!;
+    currentQuestion.question = initQuestion.question;
+    currentQuestion.answers = initQuestion.answers;
+    allQuestions.push(currentQuestion);
+    localStorage.setItem('questions', JSON.stringify(allQuestions));
   }
 }

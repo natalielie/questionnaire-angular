@@ -33,10 +33,7 @@ import { CreateQuestionnaireComponent } from './components/create-questionnaire/
 import { ManagementPageComponent } from './components/management-page/management-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { QuestionnaireListComponent } from './components/questionnaire-list/questionnaire-list.component';
-import {
-  AppState,
-  questionnaireReducers,
-} from './store/reducers/questionnaire.reducers';
+import { questionnaireReducers } from './store/reducers/questionnaire.reducers';
 import { CardElement } from './components/questionnaire-list/card-element/card-element.component';
 import { DialogBoxComponent } from './components/management-page/dialog-box/dialog-box.component';
 
@@ -70,7 +67,6 @@ import { DialogBoxComponent } from './components/management-page/dialog-box/dial
     MatPaginatorModule,
     MatDialogModule,
     MatCheckboxModule,
-    //StoreModule.forRoot(questionnaireReducerMap),
     StoreModule.forRoot({ questionnaireData: questionnaireReducers }),
     EffectsModule.forRoot([QuestionnaireEffects]),
     StoreDevtoolsModule.instrument({}),

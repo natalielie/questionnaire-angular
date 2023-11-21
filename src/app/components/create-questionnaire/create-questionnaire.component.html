@@ -25,26 +25,25 @@
         </div>
         <div class="card-body">
           <form class="form" [formGroup]="questionForm" (ngSubmit)="onSubmit()">
-            <div *ngIf="!isEdit">
-              <fieldset class="form-group" id="questionType">
-                <mat-label id="example-radio-group-label"
-                  >Choose the Question Type:</mat-label
+            <fieldset class="form-group" id="questionType">
+              <mat-label id="example-radio-group-label"
+                >Choose the Question Type:</mat-label
+              >
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="radio-group"
+                formControlName="questionType"
+                onchange="show"
+              >
+                <mat-radio-button
+                  class="radio-button"
+                  *ngFor="let type of allQuestionTypes"
+                  [value]="type"
                 >
-                <mat-radio-group
-                  aria-labelledby="example-radio-group-label"
-                  class="radio-group"
-                  formControlName="questionType"
-                >
-                  <mat-radio-button
-                    class="radio-button"
-                    *ngFor="let question of allQuestionTypes; let index = index"
-                    [value]="index"
-                  >
-                    {{ question }}
-                  </mat-radio-button>
-                </mat-radio-group>
-              </fieldset>
-            </div>
+                  {{ type }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </fieldset>
             <fieldset
               class="form-group"
               id="questions"
@@ -66,8 +65,12 @@
             <fieldset
               class="form-group"
               id="questions"
-              *ngIf="showAnswerOptions() || isEdit"
+              *ngIf="showAnswerOptions()"
             >
+              <div *ngIf="!showAnswerOptions()">
+                <p>It's an open question</p>
+              </div>
+
               <mat-label id="answer-id">Answers</mat-label>
               <ol id="answers-options">
                 <li
@@ -97,7 +100,7 @@
                     id="delete-button"
                     type="button"
                     (click)="removeOption(index)"
-                    [disabled]="possibleAnswers.controls.length <= 1"
+                    [disabled]="possibleAnswers.controls.length <= 2"
                   >
                     ×
                   </button>
