@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import * as SurveyActions from '../actions/questionnaire.actions';
+import * as QuestionnaireActions from '../actions/questionnaire.actions';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/localStorage.service';
 
 @Injectable()
-export class SurveyEffects {
+export class QuestionnaireEffects {
   constructor(
     private actions$: Actions,
     private localStorageService: LocalStorageService,
@@ -16,20 +16,20 @@ export class SurveyEffects {
 
   public getAllQuestions$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(SurveyActions.getQuestions),
+      ofType(QuestionnaireActions.getQuestions),
 
       map(() => {
         const storageValue = this.localStorageService.getAllQuestions();
         if (storageValue) {
           try {
-            return SurveyActions.questionsLoaded({
+            return QuestionnaireActions.questionsLoaded({
               questionsResponse: storageValue,
             });
           } catch {
             localStorage.removeItem('state');
           }
         }
-        return SurveyActions.questionsLoadError({
+        return QuestionnaireActions.questionsLoadError({
           error: 'Questions loading failed',
         });
       })
@@ -38,20 +38,20 @@ export class SurveyEffects {
 
   public getAnswers$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(SurveyActions.getAnswers),
+      ofType(QuestionnaireActions.getAnswers),
 
       map(() => {
         const storageValue = this.localStorageService.getAnswers();
         if (storageValue) {
           try {
-            return SurveyActions.answersLoaded({
+            return QuestionnaireActions.answersLoaded({
               answerResponse: storageValue,
             });
           } catch {
             //localStorage.removeItem('state');
           }
         }
-        return SurveyActions.answersLoadError({
+        return QuestionnaireActions.answersLoadError({
           error: 'Answers loading failed',
         });
       })
@@ -60,20 +60,20 @@ export class SurveyEffects {
 
   public getAnsweredQuestions$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(SurveyActions.getAnsweredQuestions),
+      ofType(QuestionnaireActions.getAnsweredQuestions),
 
       map(() => {
         const storageValue = this.localStorageService.getAnsweredQuestions();
         if (storageValue) {
           try {
-            return SurveyActions.answeredQuestionsLoaded({
+            return QuestionnaireActions.answeredQuestionsLoaded({
               questionsResponse: storageValue,
             });
           } catch {
             //localStorage.removeItem('state');
           }
         }
-        return SurveyActions.answeredQuestionsLoadError({
+        return QuestionnaireActions.answeredQuestionsLoadError({
           error: 'Questions loading failed',
         });
       })
@@ -82,7 +82,7 @@ export class SurveyEffects {
 
   public getUnansweredQuestions$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(SurveyActions.getUnansweredQuestions),
+      ofType(QuestionnaireActions.getUnansweredQuestions),
 
       map(() => {
         let questions = this.localStorageService.getAllQuestions();
@@ -90,7 +90,7 @@ export class SurveyEffects {
         const answeredQuestions =
           this.localStorageService.getAnsweredQuestions();
         if (!answeredQuestions) {
-          return SurveyActions.unansweredQuestionsLoaded({
+          return QuestionnaireActions.unansweredQuestionsLoaded({
             questionsResponse: questions,
           });
         }
@@ -102,14 +102,14 @@ export class SurveyEffects {
 
         if (questions) {
           try {
-            return SurveyActions.unansweredQuestionsLoaded({
+            return QuestionnaireActions.unansweredQuestionsLoaded({
               questionsResponse: questions,
             });
           } catch {
             //localStorage.removeItem('state');
           }
         }
-        return SurveyActions.unansweredQuestionsLoadError({
+        return QuestionnaireActions.unansweredQuestionsLoadError({
           error: 'Questions loading failed',
         });
       })

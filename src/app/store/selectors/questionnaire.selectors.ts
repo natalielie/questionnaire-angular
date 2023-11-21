@@ -1,26 +1,30 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppState } from '../reducers/questionnaire.reducers';
 
-export const surveyFeature = createFeatureSelector<AppState>('surveyData');
+export const questionnaireFeature =
+  createFeatureSelector<AppState>('questionnaireData');
 
-export const selectSurveyData = createSelector(surveyFeature, (state) => state);
+export const selectQuestionnaireData = createSelector(
+  questionnaireFeature,
+  (state) => state
+);
 
 export const selectAllQuestions = createSelector(
-  surveyFeature,
+  questionnaireFeature,
   (state) => state.questions
 );
 
 export const selectUnansweredQuestions = createSelector(
-  surveyFeature,
+  questionnaireFeature,
   (state) => state.questions
 );
 
 export const selectAnsweredQuestions = createSelector(
-  surveyFeature,
+  questionnaireFeature,
   (state) => state.answeredQuestions
 );
 
 export const selectAnswers = createSelector(
-  surveyFeature,
+  questionnaireFeature,
   (state) => state.answers
 );

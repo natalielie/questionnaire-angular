@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { IAnswer, IQuestion } from 'src/app/interfaces/questionnaire.interface';
 import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 
-import * as SurveyActions from '../../../store/actions/questionnaire.actions';
+import * as QuestionnaireActions from '../../../store/actions/questionnaire.actions';
 import {
   FormGroupDirective,
   FormGroup,
@@ -50,7 +50,7 @@ export class CardElement implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(SurveyActions.getAnswers());
+    this.store.dispatch(QuestionnaireActions.getAnswers());
     this.answeredQuestions$.pipe(takeUntil(this.$destroy)).subscribe((value) =>
       value.forEach((question) => {
         if (question.id === this.question.id) {

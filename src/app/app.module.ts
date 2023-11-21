@@ -26,16 +26,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { SurveyEffects } from './store/effects/questionnaire.effects';
+import { QuestionnaireEffects } from './store/effects/questionnaire.effects';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-import { CreateSurveyComponent } from './components/create-questionnaire/create-questionnaire.component';
+import { CreateQuestionnaireComponent } from './components/create-questionnaire/create-questionnaire.component';
 import { ManagementPageComponent } from './components/management-page/management-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { SurveyListComponent } from './components/questionnaire-list/questionnaire-list.component';
+import { QuestionnaireListComponent } from './components/questionnaire-list/questionnaire-list.component';
 import {
   AppState,
-  surveyReducers,
+  questionnaireReducers,
 } from './store/reducers/questionnaire.reducers';
 import { CardElement } from './components/questionnaire-list/card-element/card-element.component';
 import { DialogBoxComponent } from './components/management-page/dialog-box/dialog-box.component';
@@ -43,9 +43,9 @@ import { DialogBoxComponent } from './components/management-page/dialog-box/dial
 @NgModule({
   declarations: [
     AppComponent,
-    CreateSurveyComponent,
+    CreateQuestionnaireComponent,
     ManagementPageComponent,
-    SurveyListComponent,
+    QuestionnaireListComponent,
     NavbarComponent,
     CardElement,
     DialogBoxComponent,
@@ -70,9 +70,9 @@ import { DialogBoxComponent } from './components/management-page/dialog-box/dial
     MatPaginatorModule,
     MatDialogModule,
     MatCheckboxModule,
-    //StoreModule.forRoot(surveyReducerMap),
-    StoreModule.forRoot({ surveyData: surveyReducers }),
-    EffectsModule.forRoot([SurveyEffects]),
+    //StoreModule.forRoot(questionnaireReducerMap),
+    StoreModule.forRoot({ questionnaireData: questionnaireReducers }),
+    EffectsModule.forRoot([QuestionnaireEffects]),
     StoreDevtoolsModule.instrument({}),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -10,7 +10,7 @@ import {
   selectAnsweredQuestions,
   selectUnansweredQuestions,
 } from 'src/app/store/selectors/questionnaire.selectors';
-import * as SurveyActions from '../../store/actions/questionnaire.actions';
+import * as QuestionnaireActions from '../../store/actions/questionnaire.actions';
 import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
 
 @Component({
@@ -18,7 +18,7 @@ import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
   templateUrl: './questionnaire-list.component.html',
   styleUrls: ['./questionnaire-list.component.scss'],
 })
-export class SurveyListComponent implements OnInit, OnDestroy {
+export class QuestionnaireListComponent implements OnInit, OnDestroy {
   unansweredQuestions$ = this.store.select(selectUnansweredQuestions);
   answeredQuestions$ = this.store.select(selectAnsweredQuestions);
 
@@ -31,7 +31,7 @@ export class SurveyListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(SurveyActions.getUnansweredQuestions());
+    this.store.dispatch(QuestionnaireActions.getUnansweredQuestions());
   }
 
   ngOnDestroy(): void {

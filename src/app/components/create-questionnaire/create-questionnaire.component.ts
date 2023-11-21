@@ -17,14 +17,14 @@ import { managementPath } from 'src/app/shared/globals';
 import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 import { Store } from '@ngrx/store';
 import { selectAllQuestions } from 'src/app/store/selectors/questionnaire.selectors';
-import * as SurveyActions from '../../store/actions/questionnaire.actions';
+import * as QuestionnaireActions from '../../store/actions/questionnaire.actions';
 
 @Component({
   selector: 'app-create-questionnaire',
   templateUrl: './create-questionnaire.component.html',
   styleUrls: ['./create-questionnaire.component.scss'],
 })
-export class CreateSurveyComponent implements OnInit {
+export class CreateQuestionnaireComponent implements OnInit {
   /**
    * A reference to the `questionForm` template within the component's view.
    * Allows working with a form reference, not form itself
@@ -74,7 +74,7 @@ export class CreateSurveyComponent implements OnInit {
     if (this.route.snapshot.params['id']) {
       this.isEdit = true;
 
-      this.store.dispatch(SurveyActions.getQuestions());
+      this.store.dispatch(QuestionnaireActions.getQuestions());
       this.store.select(selectAllQuestions).subscribe((questions) => {
         let selectedQuestion: IQuestion = questions.find(
           (question) => question.id === this.route.snapshot.params['id']

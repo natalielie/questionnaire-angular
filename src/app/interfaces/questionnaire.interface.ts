@@ -1,4 +1,4 @@
-export interface ISurvey {
+export interface IQuestionnaire {
   questions: IQuestion[];
   answeredQuestions: IQuestion[];
   answers: IAnswer[];

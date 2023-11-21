@@ -10,9 +10,9 @@ import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import {
   selectAllQuestions,
-  selectSurveyData,
+  selectQuestionnaireData,
 } from 'src/app/store/selectors/questionnaire.selectors';
-import * as SurveyActions from '../../store/actions/questionnaire.actions';
+import * as QuestionnaireActions from '../../store/actions/questionnaire.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
@@ -59,7 +59,7 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(SurveyActions.getQuestions());
+    this.store.dispatch(QuestionnaireActions.getQuestions());
 
     this.dataSource$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       this.allDataSource!.data = value;

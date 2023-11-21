@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {
   createPath,
   managementPath,
-  surveyListPath,
+  questionnaireListPath,
 } from 'src/app/shared/globals';
 
 /**
@@ -31,8 +31,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigate([createPath]);
   }
 
-  goToSurveyListPage(): void {
-    this.router.navigate([surveyListPath]);
+  goToQuestionnaireListPage(): void {
+    this.router.navigate([questionnaireListPath]);
   }
 
   logout(): void {
