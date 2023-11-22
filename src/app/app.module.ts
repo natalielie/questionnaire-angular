@@ -1,6 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -36,8 +35,8 @@ import { QuestionnaireListComponent } from './components/questionnaire-list/ques
 import { questionnaireReducers } from './store/reducers/questionnaire.reducers';
 import { CardElement } from './components/questionnaire-list/card-element/card-element.component';
 import { DialogBoxComponent } from './components/management-page/dialog-box/dialog-box.component';
-import { SortByCreationDatePipe } from './components/questionnaire-list/sort-by-creation-date.pipe';
-import { SortByAnswerDatePipe } from './components/questionnaire-list/sort-by-answer-date.pipe';
+import { SortByCreationDatePipe } from './shared/pipes/sort-by-creation-date.pipe';
+import { SortByAnswerDatePipe } from './shared/pipes/sort-by-answer-date.pipe';
 @NgModule({
   declarations: [
     AppComponent,

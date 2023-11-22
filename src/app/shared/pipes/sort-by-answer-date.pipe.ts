@@ -1,5 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
+
+/**
+ * A pipe for sorting by answer date
+ */
 @Pipe({
   name: 'sortByAnswerDate',
 })

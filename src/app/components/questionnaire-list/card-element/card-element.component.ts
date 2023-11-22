@@ -1,11 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { Store } from '@ngrx/store';
 import { IAnswer, IQuestion } from 'src/app/interfaces/questionnaire.interface';
-import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
-
-import * as QuestionnaireActions from '../../../store/actions/questionnaire.actions';
 import {
   FormGroupDirective,
   FormGroup,
@@ -14,88 +9,86 @@ import {
   Validators,
   FormArray,
 } from '@angular/forms';
-import {
-  Observable,
-  Subject,
-  Subscribable,
-  Subscription,
-  takeUntil,
-} from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import {
-  selectAnsweredQuestions,
-  selectAnswers,
-  selectUnansweredQuestions,
-} from 'src/app/store/selectors/questionnaire.selectors';
-import { QuestionService } from 'src/app/services/question.service';
 
+import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
+import { selectAnswers } from 'src/app/store/selectors/questionnaire.selectors';
+import { QuestionService } from 'src/app/services/question.service';
+import * as QuestionnaireActions from '../../../store/actions/questionnaire.actions';
+
+/**
+ * A component of the card element in a Questionnaire List
+ */
 @Component({
   selector: 'card-element',
   templateUrl: 'card-element.component.html',
   styleUrls: ['card-element.component.scss'],
 })
 export class CardElement implements OnInit, OnDestroy {
+  /**
+   * Data of the question for a card
+   */
   @Input() question!: IQuestion;
-  answeredQuestions$ = this.store.select(selectAnsweredQuestions);
-  isAnswered!: boolean;
+  @Input() isAnswered!: boolean;
+
   formReference?: FormGroupDirective;
-  questionForm!: FormGroup;
+  answerForm!: FormGroup;
+
+  answers$ = this.store.select(selectAnswers);
   chosenAnswers!: IAnswer[];
 
-  unansweredQuestions$ = this.store.select(selectUnansweredQuestions);
-
-  $destroy: Subject<boolean> = new Subject<boolean>();
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<AppState>,
-    private questionService: QuestionService
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
-    this.answeredQuestions$
-      .pipe(takeUntil(this.$destroy))
-      .subscribe((value) => {
-        if (value.find((question) => question.id === this.question.id)) {
-          this.isAnswered = true;
-        } else {
-          this.isAnswered = false;
-        }
-      });
+    this.initAnswerForm();
+
+    // filter chosen answers from all options
+    this.answers$.pipe(takeUntil(this.destroy$)).subscribe((answers) => {
+      this.chosenAnswers = answers.filter(
+        (answer) => answer.questionId === this.question.id
+      );
+    });
+  }
+
+  /**
+   * initialize the answer form
+   */
+  initAnswerForm(): void {
     if (this.question.type === 'multi') {
-      this.questionForm = this.formBuilder.group({
+      this.answerForm = this.formBuilder.group({
         answers: this.formBuilder.array([], [Validators.required]),
       });
     } else {
-      this.questionForm = this.formBuilder.group({
+      this.answerForm = this.formBuilder.group({
         answers: new FormControl<string>('', Validators.required),
       });
     }
-    this.store
-      .select(selectAnswers)
-      .pipe(takeUntil(this.$destroy))
-      .subscribe((answers) => {
-        this.chosenAnswers = answers.filter(
-          (answer) => answer.questionId === this.question.id
-        );
-      });
   }
 
   ngOnDestroy(): void {
-    this.$destroy.next(true);
-    this.$destroy.complete();
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
+  /**
+   * Data of the question for a card
+   *
+   * @params event - MatCheckboxChange, captured on checkbox change
+   *
+   */
   onCheckChange(event: MatCheckboxChange) {
-    const checkboxChoices: FormArray = this.questionForm.get(
+    const checkboxChoices: FormArray = this.answerForm.get(
       'answers'
     ) as FormArray;
-    /* Selected */
     if (event.checked) {
-      // Add a new control in the arrayForm
       checkboxChoices.push(new FormControl(event.source.value));
     } else {
-      /* unselected */
       // find the unselected element
       let i: number = 0;
 
@@ -111,18 +104,24 @@ export class CardElement implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Answer rollback
+   */
   changeAnswer(question: IQuestion): void {
-    this.questionService.changeAnswer(question);
+    this.store.dispatch(
+      QuestionnaireActions.changeAnswer({ question: question })
+    );
+    //this.questionService.changeAnswer(question);
     window.location.reload();
   }
 
   onSubmit(): void {
-    let value = this.questionForm.getRawValue();
+    let value = this.answerForm.getRawValue();
     const answer: IAnswer = {
       questionId: this.question.id,
       answer: value.answers,
     };
-    this.questionService.answerTheQuestion(answer);
+    this.store.dispatch(QuestionnaireActions.answer({ answer: answer }));
     this.isAnswered = true;
     window.location.reload();
   }

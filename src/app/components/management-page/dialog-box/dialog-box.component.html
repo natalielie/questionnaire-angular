@@ -8,7 +8,12 @@
   </p>
 </div>
 <div class="button-wrapper" mat-dialog-actions>
-  <button class="btn-delete" mat-raised-button color="warn" (click)="remove()">
+  <button
+    class="btn-delete"
+    mat-raised-button
+    color="warn"
+    (click)="deleteQuestion()"
+  >
     Delete
   </button>
   <button class="btn-cancel" mat-raised-button (click)="closeDialog()">

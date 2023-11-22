@@ -2,17 +2,18 @@
   <div class="cards-title unanswered">
     <h1 class="list-title">Unanswered Questions</h1>
   </div>
-  <div
-    class="cards-wrapper unanswered"
-    *ngIf="unansweredQuestions$ | async as unansweredQuestions"
-  >
+  <div class="cards-wrapper unanswered">
+    <!-- *ngIf="questions$ | async" -->
     <div
       class="cards unanswered-questions"
       *ngFor="
         let unansweredQuestion of unansweredQuestions | sortByCreationDate
       "
     >
-      <card-element [question]="unansweredQuestion"></card-element>
+      <card-element
+        [question]="unansweredQuestion"
+        [isAnswered]="false"
+      ></card-element>
     </div>
     <div class="questions-not-found" *ngIf="unansweredQuestions.length === 0">
       <h3>There's no unanswered question</h3>
@@ -22,15 +23,15 @@
   <div class="cards-title answered">
     <h1 class="list-title">Answered Questions</h1>
   </div>
-  <div
-    class="cards-wrapper answered"
-    *ngIf="answeredQuestions$ | async as answeredQuestions"
-  >
+  <div class="cards-wrapper answered">
     <div
       class="cards answered-questions"
       *ngFor="let answeredQuestion of answeredQuestions | sortByAnswerDate"
     >
-      <card-element [question]="answeredQuestion"></card-element>
+      <card-element
+        [question]="answeredQuestion"
+        [isAnswered]="true"
+      ></card-element>
     </div>
     <div class="questions-not-found" *ngIf="answeredQuestions.length === 0">
       <h3>There's no answered question</h3>

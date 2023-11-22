@@ -1,31 +1,23 @@
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 
 import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
-import {
-  selectAllQuestions,
-  selectQuestionnaireData,
-} from 'src/app/store/selectors/questionnaire.selectors';
+import { selectAllQuestions } from 'src/app/store/selectors/questionnaire.selectors';
 import * as QuestionnaireActions from '../../store/actions/questionnaire.actions';
-import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
-import { createPath, editPath } from 'src/app/shared/globals';
-import { QuestionService } from 'src/app/services/question.service';
-import { HttpParams } from '@angular/common/http';
+import { createPath } from 'src/app/shared/globals';
 
+/**
+ * A component of the Management Page
+ */
 @Component({
   selector: 'app-management-page',
   templateUrl: './management-page.component.html',
@@ -34,6 +26,7 @@ import { HttpParams } from '@angular/common/http';
 export class ManagementPageComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
+
   displayedColumns: string[] = [
     'id',
     'question',
@@ -41,6 +34,7 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     'creationDate',
     'action',
   ];
+
   dataSource$ = this.store.select(selectAllQuestions);
   allDataSource = new MatTableDataSource<IQuestion>([]);
 
@@ -61,8 +55,7 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private location: Location,
-    public dialog: MatDialog,
-    private questionService: QuestionService
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -115,6 +108,9 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * open a dialog box on delete
+   */
   openDialog(question: IQuestion) {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '300px',
@@ -125,30 +121,30 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
       .afterClosed()
       .subscribe((result: { event: string; data: IQuestion }) => {
         if (result.event == 'Delete') {
-          this.deleteRowData(result.data);
+          this.deleteQuestion(result.data);
         }
       });
   }
 
-  deleteRowData(question: IQuestion) {
+  deleteQuestion(question: IQuestion) {
     this.dataSource$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       value.forEach((element) => {
         if (element.id === question.id) {
-          this.questionService.deleteQuestion(element.id);
+          this.store.dispatch(
+            QuestionnaireActions.deleteQuestion({ questionId: element.id })
+          );
         }
       });
     });
     window.location.reload();
   }
 
-  onMatSortChange() {}
-
   goToCreateQuestion(): void {
     this.router.navigate([createPath]);
   }
 
   goToEditQuestion(question: IQuestion): void {
-    this.router.navigate(['create-questionnaire/'], {
+    this.router.navigate([createPath], {
       queryParams: { id: question.id },
     });
   }

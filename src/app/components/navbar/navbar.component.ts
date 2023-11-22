@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   createPath,
@@ -14,14 +14,8 @@ import {
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   constructor(private router: Router) {}
-
-  ngOnInit(): void {}
-
-  // goToUsers(): void {
-  //   this.router.navigate([dashboardPath], { queryParamsHandling: 'preserve' });
-  // }
 
   goToManagementPage(): void {
     this.router.navigate([managementPath]);
@@ -33,9 +27,5 @@ export class NavbarComponent implements OnInit {
 
   goToQuestionnaireListPage(): void {
     this.router.navigate([questionnaireListPath]);
-  }
-
-  logout(): void {
-    localStorage.clear();
   }
 }

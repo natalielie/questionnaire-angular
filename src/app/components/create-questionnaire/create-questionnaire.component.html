@@ -1,7 +1,12 @@
 <div class="container">
   <div class="button-wrapper">
-    <button mat-raised-button color="accent" (click)="returnBack()">
-      Back
+    <button
+      mat-raised-button
+      color="accent"
+      class="btn-back"
+      (click)="returnBack()"
+    >
+      <mat-icon>arrow_back</mat-icon>
     </button>
   </div>
   <div class="title-wrapper">
@@ -14,122 +19,98 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-8 mx-auto">
-      <div class="card">
-        <div class="card-header">
-          <div *ngIf="!isEdit">
-            <h2>Create A Question</h2>
-          </div>
-          <div *ngIf="isEdit"><h2>Edit A Question</h2></div>
-        </div>
-        <div class="card-body">
-          <form class="form" [formGroup]="questionForm" (ngSubmit)="onSubmit()">
-            <fieldset class="form-group" id="questionType">
-              <mat-label id="example-radio-group-label"
-                >Choose the Question Type:</mat-label
+  <div class="card-body">
+    <form class="form" [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+      <fieldset class="form-group" id="questionType">
+        <mat-label id="example-radio-group-label"
+          >Choose the Question Type:</mat-label
+        >
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="radio-group"
+          formControlName="questionType"
+          onchange="show"
+        >
+          <mat-radio-button
+            class="radio-button"
+            *ngFor="let type of allQuestionTypes"
+            [value]="type"
+          >
+            {{ type }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </fieldset>
+      <fieldset
+        class="form-group"
+        id="questions"
+        *ngIf="
+          this.questionForm.controls['questionType'].value !== '' || isEdit
+        "
+      >
+        <mat-label>Question</mat-label>
+        <mat-form-field class="example-full-width" appearance="outline">
+          <input
+            matInput
+            placeholder="Write your question here..."
+            value=""
+            formControlName="question"
+          />
+        </mat-form-field>
+      </fieldset>
+      <fieldset class="form-group" id="questions" *ngIf="showAnswerOptions()">
+        <mat-label id="answer-id">Answers</mat-label>
+        <ol id="answers-options">
+          <li
+            formArrayName="possibleAnswers"
+            *ngFor="let answer of possibleAnswers.controls; let index = index"
+          >
+            <div class="form-group">
+              <mat-form-field
+                class="example-full-width answers"
+                appearance="outline"
               >
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="radio-group"
-                formControlName="questionType"
-                onchange="show"
-              >
-                <mat-radio-button
-                  class="radio-button"
-                  *ngFor="let type of allQuestionTypes"
-                  [value]="type"
-                >
-                  {{ type }}
-                </mat-radio-button>
-              </mat-radio-group>
-            </fieldset>
-            <fieldset
-              class="form-group"
-              id="questions"
-              *ngIf="
-                this.questionForm.controls['questionType'].value !== '' ||
-                isEdit
-              "
-            >
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Question</mat-label>
                 <input
                   matInput
-                  placeholder="Write your question here..."
-                  value=""
-                  formControlName="question"
+                  class="form-control answer"
+                  type="text"
+                  id="{{ 'answer' + index }}"
+                  formControlName="{{ index }}"
+                  placeholder="Answer*"
                 />
               </mat-form-field>
-            </fieldset>
-            <fieldset
-              class="form-group"
-              id="questions"
-              *ngIf="showAnswerOptions()"
-            >
-              <div *ngIf="!showAnswerOptions()">
-                <p>It's an open question</p>
-              </div>
-
-              <mat-label id="answer-id">Answers</mat-label>
-              <ol id="answers-options">
-                <li
-                  formArrayName="possibleAnswers"
-                  *ngFor="
-                    let answer of possibleAnswers.controls;
-                    let index = index
-                  "
-                >
-                  <div class="form-group">
-                    <mat-form-field
-                      class="example-full-width answers"
-                      appearance="outline"
-                    >
-                      <input
-                        matInput
-                        class="form-control answer"
-                        type="text"
-                        id="{{ 'answer' + index }}"
-                        formControlName="{{ index }}"
-                        placeholder="Answer*"
-                      />
-                    </mat-form-field>
-                  </div>
-                  <button
-                    class="btn btn-danger"
-                    id="delete-button"
-                    type="button"
-                    (click)="removeOption(index)"
-                    [disabled]="possibleAnswers.controls.length <= 2"
-                  >
-                    ×
-                  </button>
-                </li>
-              </ol>
-              <button
-                class="btn btn-add-answer"
-                mat-raised-button
-                color="accent"
-                type="button"
-                (click)="addNewOption()"
-              >
-                + Answer
-              </button>
-            </fieldset>
-            <div class="form-group" id="submit-button-div">
-              <button
-                class="btn btn-submit"
-                mat-raised-button
-                color="primary"
-                type="submit"
-                [disabled]="!questionForm.valid"
-              >
-                Submit
-              </button>
             </div>
-          </form>
-        </div>
+            <button
+              class="btn btn-danger"
+              id="delete-button"
+              type="button"
+              (click)="removeOption(index)"
+              [disabled]="possibleAnswers.controls.length <= 2"
+            >
+              ×
+            </button>
+          </li>
+        </ol>
+        <button
+          class="btn btn-add-answer"
+          mat-raised-button
+          color="accent"
+          type="button"
+          (click)="addNewOption()"
+        >
+          <mat-icon>add</mat-icon> Option
+        </button>
+      </fieldset>
+      <div class="form-group" id="submit-button-div">
+        <button
+          class="btn btn-submit"
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!questionForm.valid"
+        >
+          Submit
+        </button>
       </div>
-    </div>
+    </form>
   </div>
 </div>

@@ -1,23 +1,32 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { IAnswer, IQuestion } from '../interfaces/questionnaire.interface';
-import { Observable } from 'rxjs';
 import { LocalStorageService } from './localStorage.service';
 
+/**
+ * A Question Storage for processing the questions
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class QuestionService {
   constructor(private localStorageService: LocalStorageService) {}
+
+  /**
+   * Create a new question
+   */
   createQuestion(question: IQuestion): void {
     let allQuestions: IQuestion[] = this.localStorageService.getAllQuestions();
     if (allQuestions) {
       allQuestions.push(question);
-      localStorage.setItem('questions', JSON.stringify(allQuestions));
+      this.localStorageService.setItem('questions', allQuestions);
     } else {
-      localStorage.setItem('questions', JSON.stringify([question]));
+      this.localStorageService.setItem('questions', [question]);
     }
   }
 
+  /**
+   * Answer the question
+   */
   answerTheQuestion(answer: IAnswer): void {
     let allAnswers: IAnswer[] = this.localStorageService.getAnswers();
 
@@ -28,62 +37,47 @@ export class QuestionService {
         }
       });
       allAnswers.push(answer);
-      localStorage.setItem('answers', JSON.stringify(allAnswers));
+      this.localStorageService.setItem('answers', allAnswers);
     } else {
-      localStorage.setItem('answers', JSON.stringify([answer]));
+      this.localStorageService.setItem('answers', [answer]);
     }
-    this.setAnsweredQuestion(answer.questionId);
+    //this.setAnsweredQuestion(answer.questionId);
     this.updateQuestionByAnswerDate(answer.questionId, new Date());
   }
 
-  setAnsweredQuestion(id: string): void {
-    let allQuestions = this.localStorageService.getAllQuestions();
-    let allAnsweredQuestions: IQuestion[] =
-      this.localStorageService.getAnsweredQuestions();
-    let currentQuestion: IQuestion;
-    currentQuestion = allQuestions.find((question) => question.id === id)!;
-    if (allAnsweredQuestions) {
-      allAnsweredQuestions.push(currentQuestion);
-      localStorage.setItem(
-        'answeredQuestions',
-        JSON.stringify(allAnsweredQuestions)
-      );
-    } else {
-      localStorage.setItem(
-        'answeredQuestions',
-        JSON.stringify([currentQuestion])
-      );
-    }
+  /**
+   * Delete a question
+   */
+  deleteQuestion(questionId: string): void {
+    this.deleteFromAllQuestion(questionId);
+    this.deleteFromAnswers(questionId);
   }
 
-  deleteQuestion(questionId: string): void {
+  deleteFromAllQuestion(questionId: string): void {
     let allQuestions = this.localStorageService.getAllQuestions();
-    let answeredQuestions = this.localStorageService.getAnsweredQuestions();
-    let answers = this.localStorageService.getAnswers();
+
     allQuestions.forEach((question, index) => {
       if (question.id === questionId) {
         allQuestions.splice(index, 1);
       }
     });
-    answeredQuestions.forEach((question, index) => {
-      if (question.id === questionId) {
-        answeredQuestions.splice(index, 1);
-      }
-    });
+    this.localStorageService.setItem('questions', allQuestions);
+  }
+
+  deleteFromAnswers(questionId: string): void {
+    let answers = this.localStorageService.getAnswers();
+
     answers.forEach((answer, index) => {
       if (answer.questionId === questionId) {
         answers.splice(index, 1);
       }
     });
-
-    localStorage.setItem('questions', JSON.stringify(allQuestions));
-    localStorage.setItem(
-      'answeredQuestions',
-      JSON.stringify(answeredQuestions)
-    );
-    localStorage.setItem('answers', JSON.stringify(answers));
+    this.localStorageService.setItem('answers', answers);
   }
 
+  /**
+   * Update a question
+   */
   updateQuestion(initQuestion: IQuestion): void {
     let allQuestions: IQuestion[] = this.localStorageService.getAllQuestions();
 
@@ -91,52 +85,46 @@ export class QuestionService {
     currentQuestion = allQuestions.find(
       (question) => question.id === initQuestion.id
     )!;
+
     currentQuestion.question = initQuestion.question;
     currentQuestion.creationDate = initQuestion.creationDate;
     currentQuestion.type = initQuestion.type;
     currentQuestion.answers = initQuestion.answers;
+
     allQuestions = allQuestions.filter(
       (question) => question.id !== initQuestion.id
     );
+
     allQuestions.push(currentQuestion);
-    localStorage.setItem('questions', JSON.stringify(allQuestions));
+    this.localStorageService.setItem('questions', allQuestions);
+    // putting a question into the unanswered section
+    this.updateQuestionByAnswerDate(currentQuestion.id, null);
   }
 
   updateQuestionByAnswerDate(id: string, date: Date | null): void {
     let allQuestions: IQuestion[] = this.localStorageService.getAllQuestions();
-    let answeredQuestions = this.localStorageService.getAnsweredQuestions();
 
     let currentQuestion: IQuestion;
     currentQuestion = allQuestions.find((question) => question.id === id)!;
     currentQuestion.answerDate = date;
     allQuestions = allQuestions.filter((question) => question.id !== id);
-    allQuestions.push(currentQuestion);
-    localStorage.setItem('questions', JSON.stringify(allQuestions));
 
-    answeredQuestions = answeredQuestions.filter(
-      (question) => question.id !== id
-    );
-    answeredQuestions.push(currentQuestion);
-    localStorage.setItem(
-      'answeredQuestions',
-      JSON.stringify(answeredQuestions)
-    );
+    allQuestions.push(currentQuestion);
+    this.localStorageService.setItem('questions', allQuestions);
   }
 
+  /**
+   * Rollback for a question after answering
+   */
   changeAnswer(question: IQuestion): void {
-    let answeredQuestions = this.localStorageService.getAnsweredQuestions();
     let answers = this.localStorageService.getAnswers();
-    const filteredAnsweredQuestions = answeredQuestions.filter(
-      (answeredQuestion) => answeredQuestion.id !== question.id
-    );
+
     const filteredAnswers = answers.filter(
       (answer) => answer.questionId !== question.id
     );
+
     this.updateQuestionByAnswerDate(question.id, null);
-    localStorage.setItem(
-      'answeredQuestions',
-      JSON.stringify(filteredAnsweredQuestions)
-    );
-    localStorage.setItem('answers', JSON.stringify(filteredAnswers));
+
+    this.localStorageService.setItem('answers', filteredAnswers);
   }
 }

@@ -1,12 +1,6 @@
-.card {
-  width: 700px;
-  margin-left: 80px;
-  height: fit-content;
-}
-
 .button-wrapper {
   align-self: start;
-  margin-left: -90px;
+  margin-left: -80px;
   margin-top: -3px;
   position: absolute;
 }
@@ -23,26 +17,8 @@
   display: grid;
 }
 
-.example-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-}
-
-.example-full-width {
-  width: 100%;
-}
-
 .example-full-width.answers {
   width: 270px;
-}
-
-.mat-form-field-label-wrapper {
-  height: 40px;
-}
-
-.card-header {
-  margin-top: 10px;
 }
 
 mat-form-field {
@@ -55,10 +31,6 @@ mat-form-field {
 
 button {
   margin-bottom: 10px;
-}
-
-.form-group.framework {
-  margin-top: 20px;
 }
 
 li {
@@ -81,8 +53,7 @@ li {
   justify-content: center;
 }
 
-#example-radio-group-label,
-#answer-id {
+mat-label {
   margin: 20px;
   font-size: 17px;
 }
@@ -91,10 +62,6 @@ li {
   display: block;
   width: max-content;
   margin-left: -30px;
-}
-
-.example-full-width.answers {
-  width: 250px;
 }
 
 .btn.btn-danger {
@@ -117,4 +84,8 @@ li {
 
 .radio-group {
   display: contents;
+}
+
+.btn-back {
+  width: 30px;
 }

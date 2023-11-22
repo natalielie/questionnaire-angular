@@ -12,7 +12,7 @@
     mat-flat-button
     class="go-to-create-page"
   >
-    New Question
+    <mat-icon>library_add</mat-icon>
   </button>
 
   <div class="container table">
@@ -23,7 +23,6 @@
         matSort
         matSortActive="creationDate"
         matSortDirection="desc"
-        (matSortChange)="onMatSortChange()"
       >
         <!-- # Column -->
         <ng-container matColumnDef="id">
@@ -81,7 +80,7 @@
               color="accent"
               (click)="goToEditQuestion(element)"
             >
-              Edit
+              <mat-icon>edit</mat-icon>
             </button>
 
             <button
@@ -89,7 +88,7 @@
               color="warn"
               (click)="openDialog(element)"
             >
-              Delete
+              <mat-icon>delete</mat-icon>
             </button>
           </td>
         </ng-container>

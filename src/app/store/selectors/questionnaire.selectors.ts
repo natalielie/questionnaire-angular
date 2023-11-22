@@ -14,16 +14,6 @@ export const selectAllQuestions = createSelector(
   (state) => state.questions
 );
 
-export const selectUnansweredQuestions = createSelector(
-  questionnaireFeature,
-  (state) => state.questions
-);
-
-export const selectAnsweredQuestions = createSelector(
-  questionnaireFeature,
-  (state) => state.answeredQuestions
-);
-
 export const selectAnswers = createSelector(
   questionnaireFeature,
   (state) => state.answers

@@ -2,6 +2,9 @@ import { Component, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
 
+/**
+ * A component of a Delete dialog box
+ */
 @Component({
   selector: 'app-dialog-box',
   templateUrl: './dialog-box.component.html',
@@ -18,7 +21,7 @@ export class DialogBoxComponent {
     this.questionData = { ...data };
   }
 
-  remove() {
+  deleteQuestion() {
     this.dialogRef.close({ event: this.action, data: this.questionData });
   }
 

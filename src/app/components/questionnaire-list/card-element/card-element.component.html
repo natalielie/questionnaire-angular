@@ -8,7 +8,7 @@
             question.creationDate | date : "medium"
           }}</mat-card-subtitle>
         </mat-card-header>
-        <form (ngSubmit)="onSubmit()" [formGroup]="questionForm">
+        <form (ngSubmit)="onSubmit()" [formGroup]="answerForm">
           <fieldset class="form-group">
             <mat-card-content>
               <div *ngIf="question.type === 'single'">
@@ -56,7 +56,7 @@
               mat-raised-button
               type="submit"
               color="accent"
-              [disabled]="!questionForm.valid"
+              [disabled]="!answerForm.valid"
             >
               Answer
             </button>
