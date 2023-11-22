@@ -53,7 +53,6 @@ export class CardElement implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(QuestionnaireActions.getAnswers());
     this.answeredQuestions$
       .pipe(takeUntil(this.$destroy))
       .subscribe((value) => {
@@ -63,13 +62,6 @@ export class CardElement implements OnInit, OnDestroy {
           this.isAnswered = false;
         }
       });
-    // this.unansweredQuestions$
-    // .pipe(takeUntil(this.$destroy))
-    // .subscribe((value) => {
-    //   this.answeredQuestions = value.sort(
-    //     (a, b) => b.creationDate.getTime() - a.creationDate.getTime()
-    //   );
-    // });
     if (this.question.type === 'multi') {
       this.questionForm = this.formBuilder.group({
         answers: this.formBuilder.array([], [Validators.required]),
@@ -128,7 +120,6 @@ export class CardElement implements OnInit, OnDestroy {
     let value = this.questionForm.getRawValue();
     const answer: IAnswer = {
       questionId: this.question.id,
-      answerDate: new Date(),
       answer: value.answers,
     };
     this.questionService.answerTheQuestion(answer);

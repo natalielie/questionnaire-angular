@@ -172,6 +172,7 @@ export class CreateQuestionnaireComponent implements OnInit {
           type: data.questionType,
           answers: data.possibleAnswers,
           creationDate: new Date(),
+          answerDate: null,
         };
         this.questionService.createQuestion(newQuestion);
         this.formReference?.resetForm();
@@ -184,6 +185,7 @@ export class CreateQuestionnaireComponent implements OnInit {
           type: data.questionType,
           answers: data.possibleAnswers,
           creationDate: new Date(),
+          answerDate: null,
         };
         this.questionService.updateQuestion(updatedQuestion);
         this.formReference?.resetForm();

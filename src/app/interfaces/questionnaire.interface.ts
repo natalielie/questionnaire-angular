@@ -11,10 +11,10 @@ export interface IQuestion {
   type: string;
   answers: string[];
   creationDate: Date;
+  answerDate: Date | null;
 }
 
 export interface IAnswer {
   questionId: string;
-  answerDate: Date;
   answer: string[];
 }

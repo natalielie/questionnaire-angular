@@ -33,6 +33,7 @@ export class QuestionService {
       localStorage.setItem('answers', JSON.stringify([answer]));
     }
     this.setAnsweredQuestion(answer.questionId);
+    this.updateQuestionByAnswerDate(answer.questionId, new Date());
   }
 
   setAnsweredQuestion(id: string): void {
@@ -85,6 +86,7 @@ export class QuestionService {
 
   updateQuestion(initQuestion: IQuestion): void {
     let allQuestions: IQuestion[] = this.localStorageService.getAllQuestions();
+
     let currentQuestion: IQuestion;
     currentQuestion = allQuestions.find(
       (question) => question.id === initQuestion.id
@@ -100,6 +102,27 @@ export class QuestionService {
     localStorage.setItem('questions', JSON.stringify(allQuestions));
   }
 
+  updateQuestionByAnswerDate(id: string, date: Date | null): void {
+    let allQuestions: IQuestion[] = this.localStorageService.getAllQuestions();
+    let answeredQuestions = this.localStorageService.getAnsweredQuestions();
+
+    let currentQuestion: IQuestion;
+    currentQuestion = allQuestions.find((question) => question.id === id)!;
+    currentQuestion.answerDate = date;
+    allQuestions = allQuestions.filter((question) => question.id !== id);
+    allQuestions.push(currentQuestion);
+    localStorage.setItem('questions', JSON.stringify(allQuestions));
+
+    answeredQuestions = answeredQuestions.filter(
+      (question) => question.id !== id
+    );
+    answeredQuestions.push(currentQuestion);
+    localStorage.setItem(
+      'answeredQuestions',
+      JSON.stringify(answeredQuestions)
+    );
+  }
+
   changeAnswer(question: IQuestion): void {
     let answeredQuestions = this.localStorageService.getAnsweredQuestions();
     let answers = this.localStorageService.getAnswers();
@@ -109,6 +132,7 @@ export class QuestionService {
     const filteredAnswers = answers.filter(
       (answer) => answer.questionId !== question.id
     );
+    this.updateQuestionByAnswerDate(question.id, null);
     localStorage.setItem(
       'answeredQuestions',
       JSON.stringify(filteredAnsweredQuestions)

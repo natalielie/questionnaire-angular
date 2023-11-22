@@ -8,6 +8,7 @@ import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 import {
   selectAllQuestions,
   selectAnsweredQuestions,
+  selectAnswers,
   selectUnansweredQuestions,
 } from 'src/app/store/selectors/questionnaire.selectors';
 import * as QuestionnaireActions from '../../store/actions/questionnaire.actions';
@@ -21,8 +22,6 @@ import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
 export class QuestionnaireListComponent implements OnInit, OnDestroy {
   unansweredQuestions$ = this.store.select(selectUnansweredQuestions);
   answeredQuestions$ = this.store.select(selectAnsweredQuestions);
-  unansweredQuestions!: IQuestion[];
-  answeredQuestions!: IQuestion[];
   destroy$: Subject<boolean> = new Subject<boolean>();
   constructor(
     private store: Store<AppState>,
@@ -34,20 +33,6 @@ export class QuestionnaireListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store.dispatch(QuestionnaireActions.getUnansweredQuestions());
     this.store.dispatch(QuestionnaireActions.getAnswers());
-    // this.unansweredQuestions$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((value) => {
-    //     this.unansweredQuestions = value.sort(
-    //       (a, b) =>
-    //         new Date(b.creationDate).getTime() -
-    //         new Date(a.creationDate).getTime()
-    //     );
-    //   });
-    // this.answeredQuestions$
-    // .pipe(takeUntil(this.destroy$))
-    // .subscribe((value) => {
-    //   value.sort((a, b) => b.date.getTime() - a.date.getTime());
-    // });
   }
 
   ngOnDestroy(): void {

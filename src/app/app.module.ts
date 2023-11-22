@@ -36,7 +36,8 @@ import { QuestionnaireListComponent } from './components/questionnaire-list/ques
 import { questionnaireReducers } from './store/reducers/questionnaire.reducers';
 import { CardElement } from './components/questionnaire-list/card-element/card-element.component';
 import { DialogBoxComponent } from './components/management-page/dialog-box/dialog-box.component';
-
+import { SortByCreationDatePipe } from './components/questionnaire-list/sort-by-creation-date.pipe';
+import { SortByAnswerDatePipe } from './components/questionnaire-list/sort-by-answer-date.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +47,8 @@ import { DialogBoxComponent } from './components/management-page/dialog-box/dial
     NavbarComponent,
     CardElement,
     DialogBoxComponent,
+    SortByCreationDatePipe,
+    SortByAnswerDatePipe,
   ],
   imports: [
     BrowserModule,

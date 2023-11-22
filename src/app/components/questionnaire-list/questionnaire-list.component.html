@@ -8,7 +8,9 @@
   >
     <div
       class="cards unanswered-questions"
-      *ngFor="let unansweredQuestion of unansweredQuestions"
+      *ngFor="
+        let unansweredQuestion of unansweredQuestions | sortByCreationDate
+      "
     >
       <card-element [question]="unansweredQuestion"></card-element>
     </div>
@@ -26,7 +28,7 @@
   >
     <div
       class="cards answered-questions"
-      *ngFor="let answeredQuestion of answeredQuestions"
+      *ngFor="let answeredQuestion of answeredQuestions | sortByAnswerDate"
     >
       <card-element [question]="answeredQuestion"></card-element>
     </div>
