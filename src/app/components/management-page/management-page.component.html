@@ -77,25 +77,28 @@
             Action
           </th>
           <td mat-cell *matCellDef="let element" class="action-link">
-            <button
-              mat-raised-button
-              color="accent"
-              (click)="goToEditQuestion(element)"
-            >
-              <div class="mat-icon">
-                <mat-icon>edit</mat-icon>
-              </div>
-            </button>
-
-            <button
-              mat-raised-button
-              color="warn"
-              (click)="openDialog(element)"
-            >
-              <div class="mat-icon">
-                <mat-icon>delete</mat-icon>
-              </div>
-            </button>
+            <div class="btn-wrapper">
+              <button
+                mat-raised-button
+                color="accent"
+                (click)="goToEditQuestion(element)"
+              >
+                <div class="mat-icon">
+                  <mat-icon>edit</mat-icon>
+                </div>
+              </button>
+            </div>
+            <div class="btn-wrapper">
+              <button
+                mat-raised-button
+                color="warn"
+                (click)="openDialog(element)"
+              >
+                <div class="mat-icon">
+                  <mat-icon>delete</mat-icon>
+                </div>
+              </button>
+            </div>
           </td>
         </ng-container>
 

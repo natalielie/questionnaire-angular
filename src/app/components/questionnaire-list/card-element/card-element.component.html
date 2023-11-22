@@ -35,7 +35,7 @@
                     [value]="option"
                     (change)="onCheckChange($event)"
                   >
-                    {{ option }}>
+                    {{ option }}
                   </mat-checkbox>
                 </section>
               </div>
@@ -80,7 +80,7 @@
         </mat-card-header>
         <mat-card-content>
           <div class="answers-list">
-            <div *ngIf="question.type !== 'open'">
+            <div *ngIf="question.type === 'multi'">
               <div
                 class="answer-wrapper"
                 *ngFor="let singleAnswer of answer.answer"
@@ -92,7 +92,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="question.type === 'open'">
+          <div *ngIf="question.type !== 'multi'">
             <div class="answer-wrapper">
               <div class="mat-icon">
                 <mat-icon>star_border</mat-icon>

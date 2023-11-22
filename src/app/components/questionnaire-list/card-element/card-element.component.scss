@@ -37,10 +37,11 @@ mat-card-subtitle {
 }
 
 .answer-wrapper {
-  display: block;
+  display: flex;
   font-size: 16px;
 }
 
-mat-icon {
-  display: contents;
+.mat-icon {
+  display: flex;
+  margin-top: -2px;
 }

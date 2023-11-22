@@ -14,7 +14,6 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 
 import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 import { selectAnswers } from 'src/app/store/selectors/questionnaire.selectors';
-import { QuestionService } from 'src/app/services/question.service';
 import * as QuestionnaireActions from '../../../store/actions/questionnaire.actions';
 
 /**

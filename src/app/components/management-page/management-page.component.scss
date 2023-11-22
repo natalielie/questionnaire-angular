@@ -64,6 +64,7 @@ h2 {
   margin: 50px 40%;
 }
 
-mat-icon {
-  display: contents;
+.mat-icon {
+  display: flex;
+  flex-wrap: initial;
 }
