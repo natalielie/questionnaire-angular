@@ -12,7 +12,9 @@
     mat-flat-button
     class="go-to-create-page"
   >
-    <mat-icon>library_add</mat-icon>
+    <div class="mat-icon">
+      <mat-icon>library_add</mat-icon>
+    </div>
   </button>
 
   <div class="container table">
@@ -80,7 +82,9 @@
               color="accent"
               (click)="goToEditQuestion(element)"
             >
-              <mat-icon>edit</mat-icon>
+              <div class="mat-icon">
+                <mat-icon>edit</mat-icon>
+              </div>
             </button>
 
             <button
@@ -88,7 +92,9 @@
               color="warn"
               (click)="openDialog(element)"
             >
-              <mat-icon>delete</mat-icon>
+              <div class="mat-icon">
+                <mat-icon>delete</mat-icon>
+              </div>
             </button>
           </td>
         </ng-container>

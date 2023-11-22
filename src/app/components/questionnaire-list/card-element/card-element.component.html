@@ -80,7 +80,23 @@
         </mat-card-header>
         <mat-card-content>
           <div class="answers-list">
-            <div>
+            <div *ngIf="question.type !== 'open'">
+              <div
+                class="answer-wrapper"
+                *ngFor="let singleAnswer of answer.answer"
+              >
+                <div class="mat-icon">
+                  <mat-icon>star_border</mat-icon>
+                </div>
+                {{ singleAnswer }}
+              </div>
+            </div>
+          </div>
+          <div *ngIf="question.type === 'open'">
+            <div class="answer-wrapper">
+              <div class="mat-icon">
+                <mat-icon>star_border</mat-icon>
+              </div>
               {{ answer.answer }}
             </div>
           </div>
