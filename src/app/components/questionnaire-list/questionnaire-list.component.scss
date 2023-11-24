@@ -1,0 +1,42 @@
+.content-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.cards-wrapper {
+  width: 50%;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+
+  margin-top: 120px;
+  margin-left: -360px;
+}
+
+.list-title {
+  float: left;
+  margin: 50px 80px 100px;
+  width: 100%;
+}
+
+.cards {
+  width: fit-content;
+  grid-column: span 1;
+  // padding: 50px 0 0 0;
+  //grid-column-start: 1;
+}
+
+.questions-not-found {
+  position: absolute;
+  text-align: center;
+  margin-left: 25%;
+}
+
+h3 {
+  margin-left: -100%;
+  width: 100%;
+}
+
+button {
+  text-align: center;
+}

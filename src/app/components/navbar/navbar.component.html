@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <span class="fill-remaining-space">
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      #menuTrigger="matMenuTrigger"
+      (mouseover)="menuTrigger.openMenu()"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+      <span (mouseleave)="menuTrigger.closeMenu()">
+        <button mat-menu-item (click)="goToManagementPage()">
+          <mat-icon>home</mat-icon>
+          <span>Manage your questionnaire</span>
+        </button>
+        <button mat-menu-item (click)="goCreatePage()">
+          <mat-icon>create</mat-icon>
+          <span>Create a questionnaire</span>
+        </button>
+        <button mat-menu-item (click)="goToQuestionnaireListPage()">
+          <mat-icon> format_list_bulleted</mat-icon>
+          <span>Questionnaire List</span>
+        </button>
+      </span>
+    </mat-menu>
+  </span>
+  <span class="fill-remaining-space">Questionnaire App</span>
+</mat-toolbar>

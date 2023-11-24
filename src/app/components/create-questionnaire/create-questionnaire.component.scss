@@ -1,0 +1,91 @@
+.button-wrapper {
+  align-self: start;
+  margin-left: -80px;
+  margin-top: -3px;
+  position: absolute;
+}
+
+.list-title {
+  margin: 50px 0;
+}
+
+.form-control {
+  display: block;
+}
+
+.form-group {
+  display: grid;
+}
+
+.example-full-width.answers {
+  width: 270px;
+}
+
+mat-form-field {
+  width: 300px;
+}
+
+.mat-mdc-select-trigger {
+  margin-top: 10px;
+}
+
+button {
+  margin-bottom: 10px;
+}
+
+li {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.btn.btn-primary {
+  width: 100px;
+  margin-top: 10px;
+}
+
+.btn-outline-primary {
+  width: 150px;
+  margin-top: -20px;
+}
+
+#submit-button-div {
+  display: flex;
+  justify-content: center;
+}
+
+mat-label {
+  margin: 20px;
+  font-size: 17px;
+}
+
+#answers-options {
+  display: block;
+  width: max-content;
+  margin-left: -30px;
+}
+
+.btn.btn-danger {
+  margin-left: 15px;
+  height: 40px;
+  margin-top: 7px;
+}
+
+.btn-add-answer {
+  width: 100px;
+  font-size: 13px;
+  margin-top: -20px;
+}
+
+.btn-submit {
+  width: 120px;
+  height: 40px;
+  margin-top: 30px;
+}
+
+.radio-group {
+  display: contents;
+}
+
+.mat-icon {
+  display: flex;
+}

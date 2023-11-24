@@ -1,0 +1,118 @@
+<div>
+  <div *ngIf="!isAnswered">
+    <div class="content-wrapper">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>{{ question.question }}</mat-card-title>
+          <mat-card-subtitle>{{
+            question.creationDate | date : "medium"
+          }}</mat-card-subtitle>
+        </mat-card-header>
+        <form (ngSubmit)="onSubmit()" [formGroup]="answerForm">
+          <fieldset class="form-group">
+            <mat-card-content>
+              <div *ngIf="question.type === 'single'">
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="radio-group"
+                  formControlName="answers"
+                >
+                  <mat-radio-button
+                    class="radio-button"
+                    *ngFor="let option of question.answers"
+                    [value]="option"
+                  >
+                    {{ option }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div *ngIf="question.type === 'multi'">
+                <section class="checkbox-group">
+                  <mat-checkbox
+                    class="example-margin"
+                    *ngFor="let option of question.answers"
+                    [value]="option"
+                    (change)="onCheckChange($event)"
+                  >
+                    {{ option }}
+                  </mat-checkbox>
+                </section>
+              </div>
+
+              <div *ngIf="question.type === 'open'">
+                <textarea
+                  matInput
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="1"
+                  formControlName="answers"
+                ></textarea>
+              </div>
+            </mat-card-content>
+          </fieldset>
+
+          <div class="form-row">
+            <button
+              mat-raised-button
+              type="submit"
+              color="accent"
+              [disabled]="!answerForm.valid"
+            >
+              Answer
+            </button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="isAnswered">
+    <mat-card class="example-card"
+      ><div *ngFor="let answer of chosenAnswers">
+        <mat-card-header>
+          <mat-card-title>{{ question.question }}</mat-card-title>
+
+          <mat-card-subtitle
+            >Answer Date:
+            {{ question.answerDate | date : "medium" }}</mat-card-subtitle
+          >
+          <mat-card-subtitle>Answer:</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="answers-list">
+            <div *ngIf="question.type === 'multi'">
+              <div
+                class="answer-wrapper"
+                *ngFor="let singleAnswer of answer.answer"
+              >
+                <div class="mat-icon">
+                  <mat-icon>star_border</mat-icon>
+                </div>
+                {{ singleAnswer }}
+              </div>
+            </div>
+          </div>
+          <div *ngIf="question.type !== 'multi'">
+            <div class="answer-wrapper">
+              <div class="mat-icon">
+                <mat-icon>star_border</mat-icon>
+              </div>
+              {{ answer.answer }}
+            </div>
+          </div>
+        </mat-card-content>
+      </div>
+      <div class="change-answer-wrapper">
+        <button
+          mat-raised-button
+          class="btn-change-answer"
+          type="submit"
+          color="accent"
+          (click)="changeAnswer(question)"
+        >
+          Change Answer
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>

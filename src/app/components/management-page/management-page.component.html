@@ -1,0 +1,118 @@
+<div class="table-holder">
+  <div class="title-wrapper">
+    <div class="title-holder">
+      <h1 class="list-title">Questions Management</h1>
+    </div>
+  </div>
+
+  <button
+    mat--raised-button
+    color="primary"
+    (click)="goToCreateQuestion()"
+    mat-flat-button
+    class="go-to-create-page"
+  >
+    <div class="mat-icon">
+      <mat-icon>library_add</mat-icon>
+    </div>
+  </button>
+
+  <div class="container table">
+    <div>
+      <mat-table
+        class="assess-table mat-elevation-z8"
+        [dataSource]="allDataSource"
+        matSort
+        matSortActive="creationDate"
+        matSortDirection="desc"
+      >
+        <!-- # Column -->
+        <ng-container matColumnDef="id">
+          <th class="header id-column" mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            {{ i + 1 }}
+          </td>
+        </ng-container>
+
+        <!-- Question Column -->
+        <ng-container matColumnDef="question">
+          <th class="header question-column" mat-header-cell *matHeaderCellDef>
+            Question
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.question }}</td>
+        </ng-container>
+
+        <!-- Type Column -->
+        <ng-container matColumnDef="questionType">
+          <th
+            class="header questionType-column"
+            mat-header-cell
+            *matHeaderCellDef
+          >
+            Question Type
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ questionTypeChange(element.type) }}
+          </td>
+        </ng-container>
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="creationDate">
+          <th
+            class="header creationDate-column"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+          >
+            Creation Date
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.creationDate | date : "medium" }}
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell class="header action-column" *matHeaderCellDef>
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element" class="action-link">
+            <div class="btn-wrapper">
+              <button
+                mat-raised-button
+                color="accent"
+                (click)="goToEditQuestion(element)"
+              >
+                <div class="mat-icon">
+                  <mat-icon>edit</mat-icon>
+                </div>
+              </button>
+            </div>
+            <div class="btn-wrapper">
+              <button
+                mat-raised-button
+                color="warn"
+                (click)="openDialog(element)"
+              >
+                <div class="mat-icon">
+                  <mat-icon>delete</mat-icon>
+                </div>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </mat-table>
+
+      <ng-container class="no-question" *ngIf="allDataSource.data.length === 0">
+        <h2>There's no question yet</h2>
+      </ng-container>
+      <mat-paginator
+        [pageSizeOptions]="[3, 5, 10]"
+        (page)="updateRouteParameters($event)"
+      ></mat-paginator>
+    </div>
+  </div>
+</div>

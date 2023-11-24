@@ -1,0 +1,47 @@
+.example-card {
+  width: 250px;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0px, auto));
+}
+
+button {
+  position: absolute;
+  left: 30%;
+  bottom: 20px;
+}
+
+.change-answer-wrapper {
+  margin-top: 70px;
+  display: flex;
+}
+
+.btn-change-answer {
+  margin-left: -10%;
+}
+
+.radio-group,
+.checkbox-group {
+  display: grid;
+}
+
+textarea {
+  width: 200px;
+  height: 100px;
+}
+
+mat-card-subtitle {
+  margin-top: 10px;
+}
+
+.answer-wrapper {
+  display: flex;
+  font-size: 16px;
+}
+
+.mat-icon {
+  display: flex;
+  margin-top: -2px;
+}
