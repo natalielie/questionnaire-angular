@@ -1,6 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IAnswer, IQuestion } from 'src/app/interfaces/questionnaire.interface';
 import {
   FormGroupDirective,
   FormGroup,
@@ -12,6 +11,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
+import { IAnswer, IQuestion } from 'src/app/interfaces/questionnaire.interface';
 import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 import { selectAnswers } from 'src/app/store/selectors/questionnaire.selectors';
 import * as QuestionnaireActions from '../../../store/actions/questionnaire.actions';
@@ -29,6 +29,9 @@ export class CardElement implements OnInit, OnDestroy {
    * Data of the question for a card
    */
   @Input() question!: IQuestion;
+  /**
+   * check if question is answered
+   */
   @Input() isAnswered!: boolean;
 
   formReference?: FormGroupDirective;
@@ -53,21 +56,6 @@ export class CardElement implements OnInit, OnDestroy {
         (answer) => answer.questionId === this.question.id
       );
     });
-  }
-
-  /**
-   * initialize the answer form
-   */
-  initAnswerForm(): void {
-    if (this.question.type === 'multi') {
-      this.answerForm = this.formBuilder.group({
-        answers: this.formBuilder.array([], [Validators.required]),
-      });
-    } else {
-      this.answerForm = this.formBuilder.group({
-        answers: new FormControl<string>('', Validators.required),
-      });
-    }
   }
 
   ngOnDestroy(): void {
@@ -123,5 +111,20 @@ export class CardElement implements OnInit, OnDestroy {
     this.store.dispatch(QuestionnaireActions.answer({ answer: answer }));
     this.isAnswered = true;
     window.location.reload();
+  }
+
+  /**
+   * initialize the answer form
+   */
+  private initAnswerForm(): void {
+    if (this.question.type === 'multi') {
+      this.answerForm = this.formBuilder.group({
+        answers: this.formBuilder.array([], [Validators.required]),
+      });
+    } else {
+      this.answerForm = this.formBuilder.group({
+        answers: new FormControl<string>('', Validators.required),
+      });
+    }
   }
 }

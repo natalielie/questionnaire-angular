@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+
 import { IAnswer, IQuestion } from '../interfaces/questionnaire.interface';
-import { Observable } from 'rxjs';
 
 /**
  * A Local Storage Service for work with local storage diractly
@@ -13,10 +13,13 @@ export class LocalStorageService {
     return JSON.parse(localStorage.getItem('questions')!);
   }
 
-  getAnswers(): IAnswer[] {
+  getAllAnswers(): IAnswer[] {
     return JSON.parse(localStorage.getItem('answers')!);
   }
 
+  /**
+   * Set an item to a  Local Storage
+   */
   setItem(
     destination: string,
     object: IQuestion | IAnswer | IQuestion[] | IAnswer[] | null

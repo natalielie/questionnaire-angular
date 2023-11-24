@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+
 import { IAnswer, IQuestion } from 'src/app/interfaces/questionnaire.interface';
 
 /** all questions */
@@ -82,7 +83,7 @@ export const changeAnswerLoadError = createAction(
 );
 
 /** answers */
-export const getAnswers = createAction('[Answers] Get Answers');
+export const getAllAnswers = createAction('[Answers] Get Answers');
 
 export const answersLoaded = createAction(
   '[Answers] Answers Loaded',

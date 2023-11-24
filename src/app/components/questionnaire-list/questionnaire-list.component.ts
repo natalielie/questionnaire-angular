@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
@@ -28,7 +27,7 @@ export class QuestionnaireListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(QuestionnaireActions.getQuestions());
-    this.store.dispatch(QuestionnaireActions.getAnswers());
+    this.store.dispatch(QuestionnaireActions.getAllAnswers());
     this.questions$.pipe(takeUntil(this.destroy$)).subscribe((questions) => {
       this.unansweredQuestions = questions.filter(
         (question) => !question.answerDate

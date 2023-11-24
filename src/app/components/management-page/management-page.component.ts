@@ -24,7 +24,9 @@ import { createPath } from 'src/app/shared/globals';
   styleUrls: ['./management-page.component.scss'],
 })
 export class ManagementPageComponent implements OnInit, OnDestroy {
+  /** Table paginator */
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  /** Table sort */
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
   displayedColumns: string[] = [
@@ -126,7 +128,26 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteQuestion(question: IQuestion) {
+  /**
+   * Got to Create page
+   */
+  goToCreateQuestion(): void {
+    this.router.navigate([createPath]);
+  }
+
+  /**
+   * Go to Edit page
+   */
+  goToEditQuestion(question: IQuestion): void {
+    this.router.navigate([createPath], {
+      queryParams: { id: question.id },
+    });
+  }
+
+  /**
+   * Delete question from table and Local storage
+   */
+  private deleteQuestion(question: IQuestion) {
     this.dataSource$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       value.forEach((element) => {
         if (element.id === question.id) {
@@ -137,15 +158,5 @@ export class ManagementPageComponent implements OnInit, OnDestroy {
       });
     });
     window.location.reload();
-  }
-
-  goToCreateQuestion(): void {
-    this.router.navigate([createPath]);
-  }
-
-  goToEditQuestion(question: IQuestion): void {
-    this.router.navigate([createPath], {
-      queryParams: { id: question.id },
-    });
   }
 }

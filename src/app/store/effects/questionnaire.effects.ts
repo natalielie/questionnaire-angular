@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map } from 'rxjs/operators';
+
 import * as QuestionnaireActions from '../actions/questionnaire.actions';
 import { LocalStorageService } from 'src/app/services/localStorage.service';
 import { QuestionService } from 'src/app/services/question.service';
@@ -37,12 +38,12 @@ export class QuestionnaireEffects {
     )
   );
 
-  public getAnswers$ = createEffect(() =>
+  public getAllAnswers$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(QuestionnaireActions.getAnswers),
+      ofType(QuestionnaireActions.getAllAnswers),
 
       map(() => {
-        const storageValue = this.localStorageService.getAnswers();
+        const storageValue = this.localStorageService.getAllAnswers();
         if (storageValue) {
           try {
             return QuestionnaireActions.answersLoaded({
@@ -56,59 +57,6 @@ export class QuestionnaireEffects {
         }
         return QuestionnaireActions.answersLoadError({
           error: 'Answers loading failed',
-        });
-      })
-    )
-  );
-
-  public getAnsweredQuestions$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(QuestionnaireActions.getAnsweredQuestions),
-
-      map(() => {
-        let questions = this.localStorageService.getAllQuestions();
-
-        questions = questions.filter((question) => question.answerDate);
-        if (questions) {
-          try {
-            return QuestionnaireActions.answeredQuestionsLoaded({
-              questionsResponse: questions,
-            });
-          } catch {
-            QuestionnaireActions.answeredQuestionsLoadError({
-              error: 'Questions loading failed',
-            });
-          }
-        }
-        return QuestionnaireActions.answeredQuestionsLoadError({
-          error: 'Questions loading failed',
-        });
-      })
-    )
-  );
-
-  public getUnansweredQuestions$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(QuestionnaireActions.getUnansweredQuestions),
-
-      map(() => {
-        let questions = this.localStorageService.getAllQuestions();
-
-        questions = questions.filter((question) => !question.answerDate);
-
-        if (questions) {
-          try {
-            return QuestionnaireActions.unansweredQuestionsLoaded({
-              questionsResponse: questions,
-            });
-          } catch {
-            QuestionnaireActions.unansweredQuestionsLoadError({
-              error: 'Questions loading failed',
-            });
-          }
-        }
-        return QuestionnaireActions.unansweredQuestionsLoadError({
-          error: 'Questions loading failed',
         });
       })
     )

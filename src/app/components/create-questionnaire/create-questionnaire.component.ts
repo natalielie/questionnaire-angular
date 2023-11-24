@@ -10,11 +10,10 @@ import {
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
-import { QuestionService } from 'src/app/services/question.service';
-import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
+import { IQuestion } from 'src/app/interfaces/questionnaire.interface';
 import { managementPath } from 'src/app/shared/globals';
 import { AppState } from 'src/app/store/reducers/questionnaire.reducers';
 import { selectAllQuestions } from 'src/app/store/selectors/questionnaire.selectors';
@@ -28,6 +27,9 @@ import * as QuestionnaireActions from '../../store/actions/questionnaire.actions
   templateUrl: './create-questionnaire.component.html',
   styleUrls: ['./create-questionnaire.component.scss'],
 })
+/**
+ * A component of the Create Page
+ */
 export class CreateQuestionnaireComponent implements OnInit {
   @ViewChild('questionForm', { static: false })
   /**
@@ -71,54 +73,8 @@ export class CreateQuestionnaireComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-  initCreateForm(): void {
-    this.questionForm = this.formBuilder.group({
-      questionType: new FormControl<string>(''),
-      question: new FormControl<string>('', [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(50),
-      ]),
-      possibleAnswers: this.formBuilder.array([
-        new FormControl<string>('', [
-          Validators.minLength(1),
-          Validators.maxLength(50),
-        ]),
-        new FormControl<string>('', [
-          Validators.minLength(1),
-          Validators.maxLength(50),
-        ]),
-      ]),
-    });
-  }
-
-  initEditForm(): void {
-    this.isEdit = true;
-
-    this.store.dispatch(QuestionnaireActions.getQuestions());
-
-    this.store.select(selectAllQuestions).subscribe((questions) => {
-      this.selectedQuestion = questions.find(
-        (question) => question.id === this.id
-      )!;
-      this.questionForm = this.formBuilder.group({
-        questionType: new FormControl<string>(this.selectedQuestion.type),
-        question: new FormControl<string>(this.selectedQuestion.question, [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(50),
-        ]),
-        possibleAnswers: this.formBuilder.array(this.selectedQuestion.answers),
-      });
-    });
-
-    if (this.selectedQuestion.type === 'open') {
-      this.addNewOption();
-    }
-  }
-
   /**
-   * get all answer options
+   *  get all answer options
    */
   get possibleAnswers(): FormArray {
     return this.questionForm.get('possibleAnswers') as FormArray;
@@ -135,6 +91,7 @@ export class CreateQuestionnaireComponent implements OnInit {
    * deleting an answer option on user's request
    *
    * @params index - index of the option
+   *
    */
   removeOption(index: number): void {
     this.possibleAnswers.removeAt(index);
@@ -162,7 +119,69 @@ export class CreateQuestionnaireComponent implements OnInit {
     }
   }
 
-  createOnSubmit(): void {
+  /**
+   * Return to previous page
+   */
+  returnBack(): void {
+    this.location.back();
+  }
+
+  /**
+   * Initialize create form
+   */
+  private initCreateForm(): void {
+    this.questionForm = this.formBuilder.group({
+      questionType: new FormControl<string>(''),
+      question: new FormControl<string>('', [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(50),
+      ]),
+      possibleAnswers: this.formBuilder.array([
+        new FormControl<string>('', [
+          Validators.minLength(1),
+          Validators.maxLength(50),
+        ]),
+        new FormControl<string>('', [
+          Validators.minLength(1),
+          Validators.maxLength(50),
+        ]),
+      ]),
+    });
+  }
+
+  /**
+   * Initialize edit form
+   */
+  private initEditForm(): void {
+    this.isEdit = true;
+
+    this.store.dispatch(QuestionnaireActions.getQuestions());
+
+    this.store.select(selectAllQuestions).subscribe((questions) => {
+      this.selectedQuestion = questions.find(
+        (question) => question.id === this.id
+      )!;
+      this.questionForm = this.formBuilder.group({
+        questionType: new FormControl<string>(this.selectedQuestion.type),
+        question: new FormControl<string>(this.selectedQuestion.question, [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(50),
+        ]),
+        possibleAnswers: this.formBuilder.array(this.selectedQuestion.answers),
+      });
+    });
+
+    if (this.selectedQuestion.type === 'open') {
+      this.addNewOption();
+    }
+  }
+
+  /**
+   * Submit create form
+   */
+  private createOnSubmit(): void {
     const data = this.questionForm.getRawValue();
     const newQuestion: IQuestion = {
       id: this.generateID(),
@@ -180,7 +199,10 @@ export class CreateQuestionnaireComponent implements OnInit {
     this.router.navigate([managementPath]);
   }
 
-  editOnSubmit(): void {
+  /**
+   * Submit edit form
+   */
+  private editOnSubmit(): void {
     const data = this.questionForm.getRawValue();
     const updatedQuestion: IQuestion = {
       id: this.selectedQuestion.id,
@@ -198,11 +220,7 @@ export class CreateQuestionnaireComponent implements OnInit {
     this.router.navigate([managementPath]);
   }
 
-  generateID(): string {
+  private generateID(): string {
     return uuid.v4();
-  }
-
-  returnBack(): void {
-    this.location.back();
   }
 }

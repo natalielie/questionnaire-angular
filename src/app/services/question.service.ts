@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { IAnswer, IQuestion } from '../interfaces/questionnaire.interface';
 import { LocalStorageService } from './localStorage.service';
 
@@ -28,7 +29,7 @@ export class QuestionService {
    * Answer the question
    */
   answerTheQuestion(answer: IAnswer): void {
-    let allAnswers: IAnswer[] = this.localStorageService.getAnswers();
+    let allAnswers: IAnswer[] = this.localStorageService.getAllAnswers();
 
     if (allAnswers) {
       allAnswers.forEach((element) => {
@@ -41,7 +42,6 @@ export class QuestionService {
     } else {
       this.localStorageService.setItem('answers', [answer]);
     }
-    //this.setAnsweredQuestion(answer.questionId);
     this.updateQuestionByAnswerDate(answer.questionId, new Date());
   }
 
@@ -65,7 +65,7 @@ export class QuestionService {
   }
 
   deleteFromAnswers(questionId: string): void {
-    let answers = this.localStorageService.getAnswers();
+    let answers = this.localStorageService.getAllAnswers();
 
     answers.forEach((answer, index) => {
       if (answer.questionId === questionId) {
@@ -117,7 +117,7 @@ export class QuestionService {
    * Rollback for a question after answering
    */
   changeAnswer(question: IQuestion): void {
-    let answers = this.localStorageService.getAnswers();
+    let answers = this.localStorageService.getAllAnswers();
 
     const filteredAnswers = answers.filter(
       (answer) => answer.questionId !== question.id

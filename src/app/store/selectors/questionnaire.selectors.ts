@@ -4,11 +4,6 @@ import { AppState } from '../reducers/questionnaire.reducers';
 export const questionnaireFeature =
   createFeatureSelector<AppState>('questionnaireData');
 
-export const selectQuestionnaireData = createSelector(
-  questionnaireFeature,
-  (state) => state
-);
-
 export const selectAllQuestions = createSelector(
   questionnaireFeature,
   (state) => state.questions

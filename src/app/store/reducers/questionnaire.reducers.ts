@@ -149,58 +149,8 @@ export const questionnaireReducers = createReducer(
     };
     return result;
   }),
-  // answered questions
-  on(QuestionnaireActions.getAnsweredQuestions, (state) => {
-    const result = {
-      ...state,
-    };
-    return result;
-  }),
-  on(
-    QuestionnaireActions.answeredQuestionsLoaded,
-    (state, { questionsResponse }) => {
-      const result = {
-        ...state,
-        answeredQuestions: questionsResponse,
-      };
-      return result;
-    }
-  ),
-  on(QuestionnaireActions.answeredQuestionsLoadError, (state, { error }) => {
-    const result = {
-      ...state,
-      questions: [],
-      error: error,
-    };
-    return result;
-  }),
-  // unanswered questions
-  on(QuestionnaireActions.getUnansweredQuestions, (state) => {
-    const result = {
-      ...state,
-    };
-    return result;
-  }),
-  on(
-    QuestionnaireActions.unansweredQuestionsLoaded,
-    (state, { questionsResponse }) => {
-      const result = {
-        ...state,
-        questions: questionsResponse,
-      };
-      return result;
-    }
-  ),
-  on(QuestionnaireActions.unansweredQuestionsLoadError, (state, { error }) => {
-    const result = {
-      ...state,
-      questions: [],
-      error: error,
-    };
-    return result;
-  }),
   // answers
-  on(QuestionnaireActions.getAnswers, (state) => {
+  on(QuestionnaireActions.getAllAnswers, (state) => {
     const result = {
       ...state,
     };
